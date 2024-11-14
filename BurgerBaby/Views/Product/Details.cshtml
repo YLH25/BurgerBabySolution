@@ -1,0 +1,136 @@
+﻿@model BurgerBaby.Models.ViewModel.ProductVM
+@{
+    ViewData["Title"] = "Details";
+}
+
+<style>
+   
+
+    .area {
+        background-color: #fff;
+        justify-content: center;
+        align-items: center;
+        display: flex;
+    }
+
+        .area img {
+            width: 100%;
+            height: 100%;
+        }
+
+    .table-bordered th,
+    .table-bordered td {
+        text-align: center;
+        align-content: center;
+    }
+
+    .image-cell {
+        flex: 0 100px;
+        padding: 0px
+    }
+</style>
+<h1>Details</h1>
+
+<div>
+    <h4>Product</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Price)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Price)
+        </dd>
+       
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Intro)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Intro)
+        </dd>
+    </dl>
+    <a asp-action="Create" asp-controller="Img" asp-route-productId="@Model.Id" asp-route-formDetail=true>新增圖片</a>
+    <table class="table-bordered" width="100%">
+        <tr class="d-flex">
+            <th style="width:100px">封面</th>
+            <th class="image-cell ">
+                圖片
+            </th>
+            <th class="col">
+                原圖片名
+            </th>
+            <th class="col">
+                圖片名
+            </th>
+            <th class="col">
+                路徑
+            </th>
+            <th class="col">
+
+            </th>
+        </tr>
+        @foreach (var img in @Model.Imgs)
+        {
+            var imgPath = "../../savedata/" + img.SaveName; 
+            <tr class="d-flex">
+                <td style="width:100px">
+                    <input type="radio" name="IsCover" value="@img.Id" @(img.IsCover == true ? "checked" : "") />
+                </td>
+                <td class="image-cell ">
+                    <a href="javascript:void(0)" class="image-link" onclick="BigImgShow(`@imgPath`)">
+                        <img src="@imgPath" style="height:100px;width:97.5px;  object-fit :cover;">
+                    </a>
+                </td>
+                <td class="col">
+                    @img.ImgName
+                </td>
+                <td class="col">@img.SaveName</td>
+                <td class="col">@imgPath</td>
+                <td class="col">
+                    <a asp-action="Edit" asp-route-id="@img.Id" asp-controller="Img">編輯圖片</a> | <a asp-action="Details" asp-route-id="@img.Id" asp-controller="Img">圖片訊息</a> | <a asp-action="Delete"
+                                                                                                                                                                              asp-route-id="@img.Id" asp-controller="Img">刪除圖片</a>
+                </td>
+
+            </tr>
+        }
+    </table>
+
+
+
+
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>
+@await Html.PartialAsync("_BigContainerPartialView");
+@section Scripts{
+    <script>
+
+
+
+        $("[name='IsCover']").change(function () {
+            var imgId = this.value;
+            $.ajax({
+                url: "https://localhost:7228/ChangeCover",
+                method: 'put',
+                data: { imgId: imgId },
+                success: function (res) {
+                    alert(`${res.resMessege}`);
+                },
+                error: function (xhr, status, error) {
+
+                    alert(`發生錯誤:${xhr.responseJSON.resMessege}`);
+                    console.error("發生錯誤:", xhr.responseJSON.resMessege);
+                }
+            });
+        });
+    </script>
+}
+

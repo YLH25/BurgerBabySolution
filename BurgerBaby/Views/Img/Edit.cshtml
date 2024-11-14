@@ -1,0 +1,62 @@
+﻿@model BurgerBaby.Models.ViewModel.ImgEditVM
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>編輯圖片</h1>
+
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label asp-for="ProductId" class="control-label"></label>
+                <select asp-for="ProductId" class="form-control" asp-items="ViewBag.ProductId"></select>
+                <span asp-validation-for="ProductId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="IsCover" class="control-label">封面</label>
+                @Html.RadioButtonFor(model => model.IsCover, true)  是
+                @Html.RadioButtonFor(model => model.IsCover, false)  否
+            </div>
+            <div class="form-group">
+                <input type="file" name="FormFile" value="選擇檔案" id="photo"/>
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+
+        @{
+             var srcString = "../../savedata/" + Model.SaveName;
+        }
+        <img src="@srcString" id="previewImg" style="width:100px;height:100px;margin-top:10px;margin-left:10px;display:block" />
+
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        $(function () {
+            $("#photo").change(function () {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    $("#previewImg").attr("src", e.target.result);
+                    $("#previewImg").css("display", "block");
+                };
+                reader.readAsDataURL(this.files[0]);
+            });
+        });
+    </script>
+}

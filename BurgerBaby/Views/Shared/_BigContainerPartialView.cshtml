@@ -1,0 +1,35 @@
+﻿<style>
+    .bigImgConatiner {
+        position: fixed;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.9);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow-y: scroll;
+        display: none;
+        z-index: 1000;
+    }
+</style>
+<div class="bigImgConatiner" onclick="BigImgHide()">
+    <div class="bigImg"></div>
+</div>
+<script>
+    console.log(123);
+    function BigImgShow(imgpath) {
+        var tephtml = `<img src=" ${imgpath}" />`;
+        $('.bigImgConatiner').css('display', "flex");
+        $(".bigImg").html(tephtml);
+    }
+    function BigImgHide() {
+        $('.bigImgConatiner').css('display', "none");
+    }
+    window.onpopstate = function (event) {
+        if (event.state && event.state.data === 'cover-updated') {
+            location.reload();
+        }
+    };
+</script>

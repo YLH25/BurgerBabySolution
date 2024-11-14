@@ -1,0 +1,6 @@
+﻿<ul>
+    @foreach ( var claim in User.Claims)
+    {
+        <li>@claim.Value</li>
+    }
+</ul>

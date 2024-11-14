@@ -1,0 +1,137 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - BurgerBaby</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/BurgerBaby.styles.css" asp-append-version="true" />
+    @RenderSection("Styles", required: false)
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+
+</head>
+<body>
+
+    @{
+        if (User.Identity != null && User.Identity.IsAuthenticated)
+        {
+            <header>
+                <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+                    <div class="container-fluid">
+                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                            aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="navbar-collapse collapse d-sm-inline-flex d-flex justify-content-between">
+                            <ul class="navbar-nav ">
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Img" asp-action="Index">圖片</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Product" asp-action="Index">商品</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Member" asp-action="Index">會員</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Role" asp-action="Index">規則</a>
+                                </li>
+                            </ul>
+                            <div id="searchForm" class="d-flex ">
+                                @if (Model == null)
+                                {
+                                    <input id="searchString" name="searchString" class="form-control me-2" type="search" style="width:50vh" placeholder="Search">
+                                }
+                                else
+                                {
+                                    @if (Model.GetType().GetProperty("SearchString") == null || Model.SearchString == null)
+                                    {
+                                        <input id="searchString" name="searchString" class="form-control me-2" type="search" style="width:50vh" placeholder="Search">
+                                    }
+                                    else
+                                    {
+                                        <input id="searchString" name="searchString" class="form-control me-2" type="search" style="width:50vh" placeholder="Search" value="@Model.SearchString">
+                                    }
+
+                                }
+                                <select id="searchFliter">
+                                    @{
+                                        var searchFliterOptions = new[] { "Img", "Product", "Member", "Role" };
+                                        var searchFliterOptionsCN = new[] { "圖片", "商品", "會員", "規則" };
+                                        for (var i = 0; i < 4; i++)
+                                        {
+                                            if (Model == null)
+                                            {
+                                                <option value="@searchFliterOptions[i]">@searchFliterOptionsCN[i]</option>
+                                            }
+                                            else
+                                            {
+
+                                                if (Model.GetType().GetProperty("SearchFliterOption")  == null || Model.SearchFliterOption == null)
+                                                {
+                                                    <option value="@searchFliterOptions[i]">@searchFliterOptionsCN[i]</option>
+                                                }
+                                                else
+                                                {
+                                                    if (Model.SearchFliterOption != searchFliterOptions[i])
+                                                    {
+                                                        <option value="@searchFliterOptions[i]">@searchFliterOptionsCN[i]</option>
+                                                        
+                                                    }
+                                                    else
+                                                    {
+                                                        <option value="@searchFliterOptions[i]" selected>@searchFliterOptionsCN[i]</option>
+                                                    }
+
+                                                }
+                                            }
+                                        }
+                                    }
+                                </select>
+                                <button class="btn btn-outline-success" onclick="Search()">Search</button>
+                            </div>
+                            <div class="">
+                                <span style="margin-right:30px">Hi @User.Identity.Name</span>
+                                <a asp-controller="Home" asp-action="Logout">登出</a>
+                            </div>
+
+                        </div>
+                    </div>
+                </nav>
+            </header>
+            <div class="bodycontainer">
+                <main role="main" class="pb-3">
+                    @RenderBody()
+                </main>
+            </div>
+          
+            @await RenderSectionAsync("Scripts", required: false)
+        }
+        else
+        {
+            <div class="bodycontainer">
+                <main role="main" class="pb-3">
+                    @RenderBody()
+                </main>
+            </div>
+           
+
+        }
+
+    }
+
+
+    <script>
+        function Search() {
+            var searchFliter = $('#searchFliter').val();
+            var searchString = $('#searchString').val();
+            window.location.href = `https://localhost:7228/${searchFliter}/Index?searchString=${searchString}`
+        }
+    </script>
+</body>
+
+
+</html>

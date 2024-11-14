@@ -1,0 +1,21 @@
+﻿body {
+    height:100vh;
+}
+.bodycontainer {
+height:100vh;
+}
+main {
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    display: flex;
+}
+.loginform {
+    text-align:center;
+    height: 300px;
+    width: 300px;
+}
+ul li {
+   margin-left:-2em;
+    list-style-type: none;
+}

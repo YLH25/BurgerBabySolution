@@ -1,0 +1,205 @@
+﻿@model BurgerBaby.Models.ViewModel.PageResultVM<ImgVM>
+@{
+    ViewData["Title"] = "Index";
+}
+@section Styles{
+    <style>
+   
+
+        .area {
+            background-color: #fff;
+            justify-content: center;
+            align-items: center;
+            display: flex;
+        }
+
+            .area img {
+                width: 100%;
+                height: 100%;
+            }
+
+        .table-bordered th,
+        .table-bordered td {
+            text-align: center;
+            align-content: center;
+        }
+
+        .image-cell {
+            flex: 0 100px;
+            padding: 0px
+        }
+
+        th, td {
+            text-align: center;
+            align-content: center;
+        }
+
+        .w50 {
+            width: 50px;
+        }
+
+    </style>
+}
+    <div>
+        <h1>圖片清單</h1>
+
+        <p>
+            <a asp-action="Create">新增圖片</a>
+        </p>
+        <table class="table">
+            <thead>
+                <tr class="">
+                    <th class="">
+                        Id
+                    </th>
+                    <th>
+                        圖片
+                    </th>
+                    <th>
+                        圖片名稱
+                    </th>
+                    <th>
+                        儲存名
+                    </th>
+
+                    <th>
+                        商品名
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+              
+            @if (Model != null && Model.Items != null)
+                @foreach (var item in Model.Items)
+                {
+                    var imgPath = "../../savedata/" + item.SaveName;
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Id)
+                        </td>
+                        <td>
+                            <a href="javascript:void(0)" class="" onclick="BigImgShow(`@imgPath`)">
+                                <img src="@imgPath" style="width:100px;height:100px">
+                            </a>
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ImgName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.SaveName)
+                        </td>
+
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Product.Name)
+                        </td>
+                        <td>
+                            <a asp-action="Edit" asp-route-id="@item.Id">編輯圖片</a> | 
+                            <a asp-action="Delete" asp-route-id="@item.Id">刪除圖片</a>
+                        </td>
+                    </tr>
+                }
+
+        </tbody>
+    </table>
+
+    <ul class="pagination justify-content-center">
+        @if (Model != null)
+        {
+            var pageIndex = Model.PageIndex;
+            var totalPages = Model.TotalPages;
+            var pagesStringList = Model.PagesStringList;
+            if (totalPages != 1 && totalPages != 0)
+            {
+                if (pageIndex == 1)
+                {
+                    <li class="page-item disabled">
+                        <a class="page-link" href="#">Previous</a>
+                    </li>
+                }
+                else
+                {
+                    <li class="page-item ">
+                        <a class="page-link" href=@($"/Img/Index?searchString={Model.SearchString}&pageIndex={Model.PageIndex-1}&pageSize={Model.PageSize}")>Previous</a>
+                    </li>
+                }
+
+                if (pagesStringList != null)
+                {
+                    foreach (var ps in pagesStringList)
+                    {
+                        var index = ps;
+                        if (ps == "1..")
+                        {
+                            index = "1";
+                        }
+                        if (ps == $"..{totalPages}")
+                        {
+                            index = totalPages.ToString();
+                        }
+                        if (ps != pageIndex.ToString())
+                        {
+                            <li class="page-item"><a class="page-link " href=@($"/Img/Index?searchString={Model.SearchString}&pageIndex={index}&pageSize={Model.PageSize}")>@ps</a></li>
+                        }
+                        else
+                        {
+                            <li class="page-item active"><a class="page-link " href=@($"/Img/Index?searchString={Model.SearchString}&pageIndex={index}&pageSize={Model.PageSize}")>@ps</a></li>
+                        }
+                    }
+                }
+                if (pageIndex == totalPages)
+                {
+                    <li class="page-item disabled">
+                        <a class="page-link" href="#">Next</a>
+                    </li>
+                }
+                else
+                {
+                    <li class="page-item ">
+                        <a class="page-link" href=@($"/Img/Index?searchString={Model.SearchString}&pageIndex={Model.PageIndex+1}&pageSize={Model.PageSize}")>Next</a>
+                    </li>
+                }
+                <input id="pageIndexInput" style="height:38.48px" type="text" placeholder="跳轉至" />
+            }
+           
+        }
+
+    </ul>
+    
+</div>
+
+
+@await Html.PartialAsync("_BigContainerPartialView");
+
+
+@section Scripts{
+
+    <script>
+       
+            $(function () {
+                var totalPages = @((Model != null && Model.GetType().GetProperty("TotalPages") != null && Model.TotalPages != 0) ? Model.TotalPages : 0);
+                var searchString = `@Html.Raw(Model?.SearchString ?? "")`;
+                var pageSize = @((Model != null && Model.GetType().GetProperty("PageSize") != null && Model.PageSize != 0) ? Model.PageSize : 0);
+                $('#pageIndexInput').on('keyup', function (e) {
+                    if (e.keyCode === 13 || e.key == 'Enter') {
+                        var pageIndexFromInput = $(`#pageIndexInput`).val().trim();
+                        if (pageIndexFromInput == '' || isNaN(pageIndexFromInput) == true) {
+                            alert('請輸入數字');
+                        }
+                        else if (pageIndexFromInput > totalPages) {
+                            alert("沒有那麼多頁");
+                        }
+                        else {
+                            var url = `/Img/Index?searchString=${searchString}&pageIndex=${pageIndexFromInput}&pageSize=${pageSize}`;
+                            window.location.href = url;
+                        }
+                    }
+                });
+            });
+        
+
+    </script>
+}
+
+
+

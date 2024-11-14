@@ -1,0 +1,76 @@
+﻿@model BurgerBaby.Models.ViewModel.ImgCreateVM
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>新增圖片</h1>
+
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create" enctype="multipart/form-data">
+            <div class="form-group">
+                <label asp-for="ProductId" class="control-label">產品名</label>
+                <select asp-for="ProductId" class="form-control" asp-items="ViewBag.ProductId"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="IsCover" class="control-label">封面</label>
+                @Html.RadioButtonFor(model => model.IsCover, true)  是
+                @Html.RadioButtonFor(model => model.IsCover, false)  否
+            </div>
+            <div class="form-group">
+                <input type="file" name="FormFile" value="選擇檔案" class="form-control-file" id="photo" />
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            </div>
+            <div class="form-group">
+                @if (ViewBag.FormDetail==true) 
+                {
+                    <input type="submit" value="Create" asp-route-formDetail=true class="btn btn-primary" />
+                }
+                else{
+                    <input type="submit" value="Create" class="btn btn-primary" />
+                }
+            </div>
+        </form>
+
+        <img id="previewImg" style="width:100px;height:100px;margin-top:10px;margin-left:10px;display:none" />
+    </div>
+</div>
+
+<div>
+    
+        @if (Model == null)
+    {
+        <a asp-action="Index">返回</a>
+    }
+   else{
+        <a asp-controller="Product"  asp-action="Details" asp-route-id="@Model.ProductId">返回</a>
+   }
+</div>
+
+
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+
+
+
+    }
+    <script>
+     
+            $(function () {
+            $("#photo").change(function () {
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
+                        $("#previewImg").attr("src", e.target.result);
+                        $("#previewImg").css("display", "block");
+                    };
+                    reader.readAsDataURL(this.files[0]);
+                });
+            });
+    </script>
+
+}
