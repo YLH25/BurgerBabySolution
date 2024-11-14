@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using System.Net;
 using BurgerBabyApi.Models.EFModel;
-using BurgerBabyApi.Models.Infa;
+using BurgerBabyApi.Models.Infa; 
 using Newtonsoft.Json;
 using Microsoft.Extensions.Options;
 
