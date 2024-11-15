@@ -119,7 +119,7 @@ export default {
       const url = 'https://localhost:7266/login';
       axios.post(url, {
         email: this.email,
-          password: this.password
+        password: this.password
       },{withCredentials: true})
       .then(res => { 
         if(res.status==200)

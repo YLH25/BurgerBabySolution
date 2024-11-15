@@ -15,11 +15,30 @@ namespace BurgerBaby.Models.Repo.Interface
         }
         public async Task<IEnumerable<Member>> GetMembersAsync()
         {
-            return await _context.Members.Include(x => x.Role).ToListAsync();
+            return await _context.Members.Include(x => x.Role).Select(x=>new Member { 
+            Id=x.Id,
+Name=x.Name,
+RoleId=x.RoleId,
+Address=x.Address,
+Password=x.Password,
+Phone=x.Phone,
+Role=x.Role,
+Email=x.Email,
+            }).ToListAsync();
         }
         public async Task<Member?> GetMemberByIdAsync(int id)
         {
-            var member = await _context.Members.Include(x => x.Role).FirstOrDefaultAsync(x => x.Id == id);
+            var member = await _context.Members.Include(x => x.Role).Select(x => new Member
+            {
+                Id = x.Id,
+                Name = x.Name,
+                RoleId = x.RoleId,
+                Address = x.Address,
+                Password = x.Password,
+                Phone = x.Phone,
+                Role = x.Role,
+                Email = x.Email,
+            }).FirstOrDefaultAsync(x => x.Id == id);
             return member;
         }
         public async Task<PageResult<Member>> GetMembersBysearchStringAsync(string? searchString, int pageIndex, int pageSize)

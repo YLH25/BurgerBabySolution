@@ -17,10 +17,25 @@ namespace BurgerBaby.Models.Repo.Interface
         }
         public async Task<Img?> GetImgByIdAsync(int id)
         {
-            return await _context.Imgs.Include(i => i.Product).FirstOrDefaultAsync(x => x.Id == id);
+            return await _context.Imgs.Include(i => i.Product).Select(x=>new Img { 
+            Id = x.Id,
+            Product = x.Product,
+            ProductId = x.ProductId,
+            ImgName = x.ImgName,
+            SaveName = x.SaveName,
+            IsCover = x.IsCover,
+            }).FirstOrDefaultAsync(x => x.Id == id);
         }
         public async Task<IEnumerable<Img>> GetImgsAsync() {
-            return await _context.Imgs.Include(i => i.Product).ToListAsync() ;
+            return await _context.Imgs.Include(i => i.Product).Select(x => new Img
+            {
+                Id = x.Id,
+                Product = x.Product,
+                ProductId = x.ProductId,
+                ImgName = x.ImgName,
+                SaveName = x.SaveName,
+                IsCover = x.IsCover,
+            }).ToListAsync() ;
         }
         public async Task<PageResult<Img>> GetImgsBysearchStringAsync(string? searchString, int pageIndex, int pageSize)
         {

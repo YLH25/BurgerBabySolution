@@ -55,7 +55,7 @@ export default {
                     throw new Error("新密碼與確認密碼不同請重新輸入");
                 }
                 const url = `https://localhost:7266/change-password/`
-                const res =await axios.post(url,{newPassword:this.confirmPassword}, {
+                const res =await axios.post(url,{password:this.password}, {
                     headers: {
                         authorization: "Bearer " + this.$store.state.accessToken
                     }, withCredentials: true
@@ -70,8 +70,7 @@ export default {
             }
         },
         getMember() {
-
-            // const url = `https://localhost:7266/Member/Index/${this.$route.params.id}`
+            //更改測試網址
             const url = `https://localhost:7266/member/1`
             axios.get(url, {
                 headers: {

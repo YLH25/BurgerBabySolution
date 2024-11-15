@@ -15,11 +15,24 @@ namespace BurgerBaby.Models.Repo.Interface
         }
         public async Task<IEnumerable<Product>> GetProductsAsync()
         {
-            return await _context.Products.Include(x => x.Imgs).ToListAsync();
+            return await _context.Products.Include(x => x.Imgs).Select(x => new Product
+            {
+                Id = x.Id,
+                Name = x.Name,
+                Price = x.Price,
+                Imgs = x.Imgs,
+                Intro = x.Intro
+            }).ToListAsync();
         }
         public async Task<Product?> GetProductByIdAsync(int id)
         {
-            var product = await _context.Products.Include(x => x.Imgs).FirstOrDefaultAsync(x => x.Id == id);
+            var product = await _context.Products.Include(x => x.Imgs).Select(x=>new Product { 
+            Id = x.Id,
+            Name = x.Name,  
+            Price = x.Price,
+            Imgs = x.Imgs,
+            Intro =x.Intro
+            }).FirstOrDefaultAsync(x => x.Id == id);
             return product;
         }
 

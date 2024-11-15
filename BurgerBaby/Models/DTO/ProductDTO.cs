@@ -15,9 +15,9 @@ public partial class ProductDTO
     public decimal Price { get; set; }
 
     public virtual ICollection<Img> Imgs { get; set; }
-#nullable enable
-    public string? Intro { get; set; }
-#nullable disable
+
+    public string Intro { get; set; }=string.Empty;
+
 
 }
 public static class ProductExt

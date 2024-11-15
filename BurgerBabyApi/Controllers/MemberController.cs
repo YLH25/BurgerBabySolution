@@ -4,6 +4,7 @@ using BurgerBabyApi.Models.Services.Interface;
 using Microsoft.AspNetCore.Mvc;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using BurgerBabyApi.Models.ViewModel;
 
 namespace BurgerBabyApi.Controllers
 {
@@ -24,11 +25,12 @@ namespace BurgerBabyApi.Controllers
             if (member == null) { 
             return NotFound();
             }
+
             var data = new {Name=member.Name ,Phone=member.Phone,Address=member.Address,Email=member.Email};
            return Ok(data);
         }
         [HttpPost("change-password")]
-        public async Task<IActionResult> ChangePassword(string newPassword) {
+        public async Task<IActionResult> ChangePassword([FromBody]MemberVM memberVM) {
             try {
                 var authorizationHeader = HttpContext.Request.Headers["Authorization"].ToString();
                 if (string.IsNullOrEmpty(authorizationHeader) || !authorizationHeader.StartsWith("Bearer "))
@@ -44,8 +46,19 @@ namespace BurgerBabyApi.Controllers
                     return BadRequest("JWT未包含用戶訊息");
                 var member = await _memberRepository.GetMemberByIdAsync(userId);
                 if (member == null) { return NotFound(); }
-                member.Password= newPassword;
-                await _memberRepository.EditMemberAsync(member.ToDto());
+                //注意避免重複追蹤建議新增一個FTO物件避免直接用查詢實體更新
+                var memberDto = new MemberDTO
+                {
+                    Id = member.Id,
+                    RoleId = member.RoleId,
+                    Address = member.Address,
+                    Email = member.Email,
+                    Phone = member.Phone,
+                    Name = member.Name,
+                    Role = member.Role,
+                    Password = memberVM.Password,
+                };
+                await _memberRepository.EditMemberAsync(memberDto);
                 return Ok("修改成功");
             }
             catch (Exception ex){ 

@@ -17,7 +17,20 @@ namespace BurgerBaby.Models.Repo.Interface
         }
         public async Task<IEnumerable<Role>> GetRolesAsync() { 
         
-        return await _context.Roles.Include(x=>x.Members).ToListAsync();
+        return await _context.Roles.Include(x=>x.Members).Select(x=>new Role { 
+        Id = x.Id,
+        RoleName=x.RoleName,
+        Members=x.Members
+        }).ToListAsync();
+        }
+        public async Task<Role?> GetRoleByIdAsync(int id)
+        {
+            return await _context.Roles.Include(x => x.Members).Select(x => new Role
+            {
+                Id = x.Id,
+                RoleName = x.RoleName,
+                Members = x.Members
+            }).FirstOrDefaultAsync(x => x.Id == id);
         }
 
         public async Task<PageResult<Role>> GetRolesBysearchStringAsync(string? searchString, int pageIndex, int pageSize) {
@@ -50,10 +63,7 @@ namespace BurgerBaby.Models.Repo.Interface
 
             return pageResult;
         }
-        public async Task<Role?> GetRoleByIdAsync(int id)
-        {
-            return await _context.Roles.Include(x => x.Members).FirstOrDefaultAsync(x=>x.Id==id);
-        }
+
         public async Task CreateRoleAsync(RoleDTO roleDTO)
         {
             AddRole(roleDTO.ToEntity());
