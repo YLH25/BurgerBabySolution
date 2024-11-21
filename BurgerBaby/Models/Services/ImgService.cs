@@ -55,11 +55,11 @@ namespace BurgerBaby.Models.Services
                     foreach (var i in imgs)
                     {
                         i.IsCover = false;
-                        _imgRepository.Update(i);
+                     await   _imgRepository.UpdateImgAsync(i.ToDto());
                     }
                 }
                 img.IsCover = true;
-                _imgRepository.Update(img);
+             await   _imgRepository.UpdateImgAsync(img.ToDto());
                 await _imgRepository.SaveChangesAsync();
             }
         }
@@ -121,7 +121,7 @@ namespace BurgerBaby.Models.Services
                 }
                 else
                 {
-                    _imgRepository.Update(img);
+                 await    _imgRepository.UpdateImgAsync(img.ToDto());
                     await _imgRepository.SaveChangesAsync();
                 }
             }

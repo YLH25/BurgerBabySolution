@@ -1,7 +1,7 @@
 <template>
   <div>
       <div class="">
-          <img src="https://s7d1.scene7.com/is/image/mcdonalds/good-food-parents-child:1-2-full-bleed-tile-desktop?resmode=sharp2"
+          <img src="https://localhost:7266/3.jpg"
               style=" object-fit: cover; width: 100%;height:30em">
 
       </div>
@@ -12,17 +12,17 @@
                   <div class="col-md-7">
                       <b style="font-size: 3em;">現正推出</b>
                       <p style="font-size: 2em;" class="lead">
-                        想了解麥當勞有哪些最新活動嗎？你不想錯過的美食、最即時的優惠內容... 馬上探索、馬上行動！*
+                        想了解有哪些最新活動嗎？你不想錯過的美食、最即時的優惠內容... 馬上探索、馬上行動！*
                       </p>
                   </div>
                   <div class="col-md-5">
-                      <img src="https://s7d1.scene7.com/is/image/mcdonalds/good-food-parents-child:1-2-full-bleed-tile-desktop?resmode=sharp2"
+                      <img src="https://localhost:7266/5.png"
                           style="width: 30em;height: 30em;border-radius: 15%;object-fit:cover" alt="">
                   </div>
               </div>
-              <div class="row mt20 featuretteCustom">
+              <div class="row featuretteCustom" style="margin-top: 5em;">
                   <div class="col-md-5">
-                      <img src="https://s7d1.scene7.com/is/image/mcdonalds/good-food-parents-child:1-2-full-bleed-tile-desktop?resmode=sharp2"
+                      <img src="https://www.mcdonalds.com/content/dam/sites/tw/publication/desktop/CSR/0-1-csr-good-food-574x380-pc.jpg"
                           style="width: 30em;height: 30em; border-radius: 15%;object-fit: cover;" alt="">
                   </div>
                   <div class="col-md-7">

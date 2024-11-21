@@ -1,5 +1,5 @@
 <template>
-  <div v-if="this.$store.state.isLoggedIn">
+  <div>
     <section class="main-section">
       <div class="d-flex" style="flex-direction: column;">
         <div class=" m-5 d-flex">
@@ -78,29 +78,39 @@ export default {
   },
   methods: {
     getData() {
-      console.log(this.$store.state.accessToken)
-      var url = `https://localhost:7266/Product/${this.$route.params.id}`;
-
-      axios.get(url, {
-        headers: {
-          authorization: "Bearer " + this.$store.state.accessToken
-        }
-      }
-      ).then(res => {
-        this.data = res.data
-        this.tryCount = 0
-      }).catch(() => {
-        if (this.tryCount == 0) {
-          this.tryCount++
-          this.$store.dispatch("getAccessToken").then(
-            () => { this.getData() }
-          ).catch(() => { alert("錯誤請登入"), this.goBackAfterTimeout() })
-        }
-        else {
-          alert("錯誤請登入")
-          this.goBackAfterTimeout()
-        }
-      })
+      console.log(5445)
+      const url = `https://localhost:7266/Product/${this.$route.params.id}`;
+    axios.get(url)
+        .then((res) => {
+          console.log(res.data)
+            this.data = res.data; 
+            console.log(this.data)
+        })
+        .catch((ex) => {
+            alert("錯誤: " + ex.message);
+            this.goBackAfterTimeout(); 
+        });
+      
+      // axios.get(url, {
+      //   headers: {
+      //     authorization: "Bearer " + this.$store.state.accessToken
+      //   }
+      // }
+      // ).then(res => {
+      //   this.data = res.data
+      //   this.tryCount = 0
+      // }).catch(() => {
+      //   if (this.tryCount == 0) {
+      //     this.tryCount++
+      //     this.$store.dispatch("getAccessToken").then(
+      //       () => { this.getData() }
+      //     ).catch(() => { alert("錯誤請登入"), this.goBackAfterTimeout() })
+      //   }
+      //   else {
+      //     alert("錯誤請登入")
+      //     this.goBackAfterTimeout()
+      //   }
+      // })
     },
     changeImage(i) {
       this.currentImageIndex += i

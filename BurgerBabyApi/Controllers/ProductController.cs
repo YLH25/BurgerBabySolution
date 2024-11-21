@@ -24,9 +24,9 @@ namespace BurgerBabyApi.Controllers
             var pageReult = await _productService.GetPageResultVMAsync(searchString, pageIndex, pageSize);
             return Json(pageReult);
         }
-       
+        [AllowAnonymous]
         [HttpGet("product/{id}")]
-        public async Task<JsonResult> Index(int id)
+        public async Task<JsonResult> GetProductInfo(int id)
         {
             var product = await _productRepository.GetProductByIdAsync((int)id);
             if (product == null) 

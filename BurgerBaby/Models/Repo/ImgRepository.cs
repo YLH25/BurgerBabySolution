@@ -74,7 +74,13 @@ namespace BurgerBaby.Models.Repo.Interface
         }
         public async Task<IEnumerable<Img>> GetImgsByProductIdAsync(int productId)
         {
-            return await _context.Imgs.Include(i => i.Product).Where(x => x.ProductId == productId).ToListAsync();
+            return await _context.Imgs.Include(i => i.Product).Where(x => x.ProductId == productId).Select(x=>new Img { 
+            Id = x.Id,
+            ImgName = x.ImgName,
+            IsCover = x.IsCover,
+            ProductId = productId,
+            SaveName = x.SaveName,
+            }).ToListAsync();
         }
         public async Task AddImgAsync(ImgDTO imgDTO)
         {
@@ -94,7 +100,7 @@ namespace BurgerBaby.Models.Repo.Interface
             Update(img);
             await SaveChangesAsync();
         }
-        public void Update(Img img)
+        private void Update(Img img)
         {
             _context.Update(img);
         }
@@ -105,7 +111,7 @@ namespace BurgerBaby.Models.Repo.Interface
                 Delete(img);
             await SaveChangesAsync();
         }
-        public void Delete(Img img)
+        private void Delete(Img img)
         {
             _context.Remove(img);
         }

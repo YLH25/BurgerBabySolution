@@ -123,7 +123,7 @@ export default {
                     pageIndex: this.pageIndex
                 },
                
-                withCredentials:true
+                // withCredentials:true
             }).then(res => { this.data = res.data; console.log(this.data) })
                 .catch(err => {
                     alert(err.toString());

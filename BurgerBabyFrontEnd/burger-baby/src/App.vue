@@ -111,8 +111,7 @@ export default {
       }) 
     },
     getAccessToken(){
-      this.$store.dispatch("getAccessToken").catch(err=>{console.log(err.response)})
-     
+      this.$store.dispatch("getAccessToken").then(console.log(this.$store.state.memberInfo)).catch(err=>{console.log(err.response)})
     },
    
     login() {
