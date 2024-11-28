@@ -15,7 +15,7 @@ namespace BurgerBaby.Models.Repo.Interface
         }
         public async Task<Member?> GetMemberByEmailAsync(string email)
         {
-            return await _context.Members.Select(x => new Member
+            return await _context.Members.AsNoTracking().Select(x => new Member
             {
                 Id = x.Id,
                 Name = x.Name,
@@ -28,7 +28,7 @@ namespace BurgerBaby.Models.Repo.Interface
         }
         public async Task<IEnumerable<Member>> GetMembersAsync()
         {
-            return await _context.Members.Include(x => x.Role).Select(x=>new Member { 
+            return await _context.Members.AsNoTracking().Include(x => x.Role).Select(x=>new Member { 
             Id=x.Id,
 Name=x.Name,
 RoleId=x.RoleId,
@@ -41,7 +41,7 @@ Email=x.Email,
         }
         public async Task<Member?> GetMemberByIdAsync(int id)
         {
-            var member = await _context.Members.Include(x => x.Role).Select(x => new Member
+            var member = await _context.Members.AsNoTracking().Include(x => x.Role).Select(x => new Member
             {
                 Id = x.Id,
                 Name = x.Name,
@@ -56,7 +56,7 @@ Email=x.Email,
         }
         public async Task<PageResult<Member>> GetMembersBysearchStringAsync(string? searchString, int pageIndex, int pageSize)
         {
-            IQueryable<Member> query = _context.Members.Include(x => x.Role).AsNoTracking();
+            IQueryable<Member> query = _context.Members.AsNoTracking().Include(x => x.Role).AsNoTracking();
 
             if (!string.IsNullOrEmpty(searchString))
             {
@@ -122,7 +122,7 @@ Email=x.Email,
             await _context.SaveChangesAsync();
         }
         public async Task<Member?> ValidateMemberAsync(string email, string password) { 
-        return await _context.Members.Where(x => x.Email == email).Where(x => x.Password == password).FirstOrDefaultAsync();
+        return await _context.Members.AsNoTracking().Where(x => x.Email == email).Where(x => x.Password == password).FirstOrDefaultAsync();
         }
   
     }

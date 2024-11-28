@@ -17,7 +17,7 @@ namespace BurgerBaby.Models.Repo.Interface
         }
         public async Task<IEnumerable<Role>> GetRolesAsync() { 
         
-        return await _context.Roles.Include(x=>x.Members).Select(x=>new Role { 
+        return await _context.Roles.AsNoTracking().Include(x=>x.Members).Select(x=>new Role { 
         Id = x.Id,
         RoleName=x.RoleName,
         Members=x.Members
@@ -25,7 +25,7 @@ namespace BurgerBaby.Models.Repo.Interface
         }
         public async Task<Role?> GetRoleByIdAsync(int id)
         {
-            return await _context.Roles.Include(x => x.Members).Select(x => new Role
+            return await _context.Roles.AsNoTracking().Include(x => x.Members).Select(x => new Role
             {
                 Id = x.Id,
                 RoleName = x.RoleName,
@@ -34,7 +34,7 @@ namespace BurgerBaby.Models.Repo.Interface
         }
 
         public async Task<PageResult<Role>> GetRolesBysearchStringAsync(string? searchString, int pageIndex, int pageSize) {
-            IQueryable<Role> query = _context.Roles.Include(x => x.Members).AsNoTracking();
+            IQueryable<Role> query = _context.Roles.AsNoTracking().Include(x => x.Members).AsNoTracking();
 
             if (!string.IsNullOrEmpty(searchString))
             {

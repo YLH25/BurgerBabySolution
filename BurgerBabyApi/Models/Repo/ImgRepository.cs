@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Drawing.Printing;
+using System.Linq.Expressions;
 
 namespace BurgerBabyApi.Models.Repo.Interface
 {
@@ -18,7 +19,7 @@ namespace BurgerBabyApi.Models.Repo.Interface
         }
         public async Task<Img?> GetImgByIdAsync(int id)
         {
-            return await _context.Imgs.Include(i => i.Product).Select(x => new Img
+            return await _context.Imgs.AsNoTracking().Include(i => i.Product).Select(x => new Img
             {
                 Id = x.Id,
                 Product = x.Product,
@@ -30,7 +31,7 @@ namespace BurgerBabyApi.Models.Repo.Interface
         }
         public async Task<IEnumerable<Img>> GetImgsAsync()
         {
-            return await _context.Imgs.Include(i => i.Product).Select(x => new Img
+            return await _context.Imgs.AsNoTracking().Include(i => i.Product).Select(x => new Img
             {
                 Id = x.Id,
                 Product = x.Product,
@@ -42,7 +43,7 @@ namespace BurgerBabyApi.Models.Repo.Interface
         }
         public async Task<PageResult<Img>> GetImgsBysearchStringAsync(string? searchString, int pageIndex, int pageSize)
         {
-            IQueryable<Img> query = _context.Imgs.Include(i => i.Product);
+            IQueryable<Img> query = _context.Imgs.AsNoTracking().Include(i => i.Product);
 
             if (!string.IsNullOrEmpty(searchString))
             {
@@ -63,17 +64,9 @@ namespace BurgerBabyApi.Models.Repo.Interface
             }
             else
             {
-                query = _context.Imgs.Include(i => i.Product);
+                query = _context.Imgs.AsNoTracking().Include(i => i.Product);
             }
-            var items = await query.Skip((pageIndex - 1) * pageSize).Take(pageSize).Select(x => new Img
-            {
-                Id = x.Id,
-                Product = x.Product,
-                ProductId = x.ProductId,
-                ImgName = x.ImgName,
-                SaveName = x.SaveName,
-                IsCover = x.IsCover,
-            }).ToListAsync();
+            var items = await query.Skip((pageIndex - 1) * pageSize).Take(pageSize).ToListAsync();
 
             var pageResult = new PageResult<Img>();
             pageResult.Items = items;
@@ -86,7 +79,7 @@ namespace BurgerBabyApi.Models.Repo.Interface
         }
         public async Task<IEnumerable<Img>> GetImgsByProductIdAsync(int productId)
         {
-            return await _context.Imgs.Include(i => i.Product).Where(x => x.ProductId == productId).Select(x => new Img
+            return await _context.Imgs.AsNoTracking().Include(i => i.Product).Where(x => x.ProductId == productId).Select(x => new Img
             {
                 Id = x.Id,
                 ImgName = x.ImgName,
@@ -104,13 +97,13 @@ namespace BurgerBabyApi.Models.Repo.Interface
 
         public async Task<Img?> GetImgByIdAsNoTrackingAsync(int id)
         {
+
             return await _context.Imgs.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
         }
         public async Task UpdateImgAsync(ImgDTO imgDTO)
         {
-            var img = imgDTO.ToEntity();
 
-            Update(img);
+            Update(imgDTO.ToEntity());
             await SaveChangesAsync();
         }
         private void Update(Img img)

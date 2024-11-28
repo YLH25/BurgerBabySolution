@@ -15,7 +15,7 @@ namespace BurgerBaby.Models.Repo.Interface
         }
         public async Task<IEnumerable<Product>> GetProductsAsync()
         {
-            return await _context.Products.Include(x => x.Imgs).Select(x => new Product
+            return await _context.Products.AsNoTracking().Include(x => x.Imgs).Select(x => new Product
             {
                 Id = x.Id,
                 Name = x.Name,
@@ -26,7 +26,7 @@ namespace BurgerBaby.Models.Repo.Interface
         }
         public async Task<Product?> GetProductByIdAsync(int id)
         {
-            var product = await _context.Products.Include(x => x.Imgs).Select(x=>new Product { 
+            var product = await _context.Products.AsNoTracking().Include(x => x.Imgs).Select(x=>new Product { 
             Id = x.Id,
             Name = x.Name,  
             Price = x.Price,
@@ -38,7 +38,7 @@ namespace BurgerBaby.Models.Repo.Interface
 
         public async Task<PageResult<Product>> GetProductsBysearchStringAsync(string? searchString, int pageIndex, int pageSize)
         {
-            IQueryable<Product> query = _context.Products.Include(x => x.Imgs).AsNoTracking();
+            IQueryable<Product> query = _context.Products.AsNoTracking().Include(x => x.Imgs).AsNoTracking();
 
             if (!string.IsNullOrEmpty(searchString))
             {

@@ -60,7 +60,6 @@ namespace BurgerBaby.Models.Services
                 }
                 img.IsCover = true;
              await   _imgRepository.UpdateImgAsync(img.ToDto());
-                await _imgRepository.SaveChangesAsync();
             }
         }
         public bool IsAllowedFile(IFormFile formFile)
@@ -71,7 +70,7 @@ namespace BurgerBaby.Models.Services
             return allowedExtension.Contains(fileExtension);
         }
 
-        public async Task CopyFileAsync(Img img, IFormFile formFile)
+        private async Task<Img> CopyFileAsync(Img img, IFormFile formFile)
         {
 
             var fileName = formFile.FileName;
@@ -86,12 +85,13 @@ namespace BurgerBaby.Models.Services
             }
             img.ImgName = fileName;
             img.SaveName = newfileName;
+            return img;
         }
         public async Task CreateImgAsync(ImgDTO imgDTO, IFormFile formFile)
         {
             var img = imgDTO.ToEntity();
 
-            await CopyFileAsync(img, formFile);
+           img=  await CopyFileAsync(img, formFile);
             await _imgRepository.AddImgAsync(img.ToDto());
         }
         public async Task EditImgAsync(ImgDTO imgDTO, IFormFile? formFile)
@@ -108,7 +108,7 @@ namespace BurgerBaby.Models.Services
                     {
                         System.IO.File.Delete(oldFilePath);
                     }
-                    await CopyFileAsync(img, formFile);
+                   img=  await CopyFileAsync(img, formFile);
                 }
                 else
                 {
@@ -122,7 +122,6 @@ namespace BurgerBaby.Models.Services
                 else
                 {
                  await    _imgRepository.UpdateImgAsync(img.ToDto());
-                    await _imgRepository.SaveChangesAsync();
                 }
             }
 

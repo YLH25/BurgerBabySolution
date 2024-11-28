@@ -1,6 +1,7 @@
 ﻿using BurgerBabyApi.Models.EFModel;
 using BurgerBabyApi.Models.Infa;
 using BurgerBabyApi.Models.ViewModel;
+using BurgerBabyApi.Models.Repo.Interface;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
@@ -18,7 +19,7 @@ namespace BurgerBabyApi.Models.Repo.Interface
         public async Task<IEnumerable<Role>> GetRolesAsync()
         {
 
-            return await _context.Roles.Include(x => x.Members).Select(x => new Role
+            return await _context.Roles.AsNoTracking().Include(x => x.Members).Select(x => new Role
             {
                 Id = x.Id,
                 RoleName = x.RoleName,
@@ -27,7 +28,7 @@ namespace BurgerBabyApi.Models.Repo.Interface
         }
         public async Task<Role?> GetRoleByIdAsync(int id)
         {
-            return await _context.Roles.Include(x => x.Members).Select(x => new Role
+            return await _context.Roles.AsNoTracking().Include(x => x.Members).Select(x => new Role
             {
                 Id = x.Id,
                 RoleName = x.RoleName,
@@ -35,8 +36,9 @@ namespace BurgerBabyApi.Models.Repo.Interface
             }).FirstOrDefaultAsync(x => x.Id == id);
         }
 
-        public async Task<PageResult<Role>> GetRolesBysearchStringAsync(string? searchString, int pageIndex, int pageSize) {
-            IQueryable<Role> query = _context.Roles.Include(x => x.Members).AsNoTracking();
+        public async Task<PageResult<Role>> GetRolesBysearchStringAsync(string? searchString, int pageIndex, int pageSize)
+        {
+            IQueryable<Role> query = _context.Roles.AsNoTracking().Include(x => x.Members).AsNoTracking();
 
             if (!string.IsNullOrEmpty(searchString))
             {
@@ -45,7 +47,7 @@ namespace BurgerBabyApi.Models.Repo.Interface
                 {
                     query = query.Where(x => x.Id == i ||
                                              x.RoleName.Contains(searchString) ||
-                                             x.Members.Any(x=>x.Name==searchString));
+                                             x.Members.Any(x => x.Name == searchString));
                 }
                 else
                 {

@@ -1,5 +1,6 @@
 ﻿using BurgerBabyApi.Models.EFModel;
 using BurgerBabyApi.Models.Infa;
+using BurgerBabyApi.Models.Repo.Interface;
 using Microsoft.EntityFrameworkCore;
 using System;
 
@@ -15,7 +16,7 @@ namespace BurgerBabyApi.Models.Repo.Interface
         }
         public async Task<Member?> GetMemberByEmailAsync(string email)
         {
-            return await _context.Members.Select(x => new Member
+            return await _context.Members.AsNoTracking().Select(x => new Member
             {
                 Id = x.Id,
                 Name = x.Name,
@@ -28,7 +29,7 @@ namespace BurgerBabyApi.Models.Repo.Interface
         }
         public async Task<IEnumerable<Member>> GetMembersAsync()
         {
-            return await _context.Members.Include(x => x.Role).Select(x => new Member
+            return await _context.Members.AsNoTracking().Include(x => x.Role).Select(x => new Member
             {
                 Id = x.Id,
                 Name = x.Name,
@@ -42,7 +43,7 @@ namespace BurgerBabyApi.Models.Repo.Interface
         }
         public async Task<Member?> GetMemberByIdAsync(int id)
         {
-            var member = await _context.Members.Include(x => x.Role).Select(x => new Member
+            var member = await _context.Members.AsNoTracking().Include(x => x.Role).Select(x => new Member
             {
                 Id = x.Id,
                 Name = x.Name,
@@ -57,7 +58,7 @@ namespace BurgerBabyApi.Models.Repo.Interface
         }
         public async Task<PageResult<Member>> GetMembersBysearchStringAsync(string? searchString, int pageIndex, int pageSize)
         {
-            IQueryable<Member> query = _context.Members.Include(x => x.Role).AsNoTracking();
+            IQueryable<Member> query = _context.Members.AsNoTracking().Include(x => x.Role).AsNoTracking();
 
             if (!string.IsNullOrEmpty(searchString))
             {
@@ -125,7 +126,7 @@ namespace BurgerBabyApi.Models.Repo.Interface
         }
         public async Task<Member?> ValidateMemberAsync(string email, string password)
         {
-            return await _context.Members.Where(x => x.Email == email).Where(x => x.Password == password).FirstOrDefaultAsync();
+            return await _context.Members.AsNoTracking().Where(x => x.Email == email).Where(x => x.Password == password).FirstOrDefaultAsync();
         }
 
     }
