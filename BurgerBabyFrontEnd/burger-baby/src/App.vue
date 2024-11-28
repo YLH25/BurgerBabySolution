@@ -22,6 +22,10 @@
             <router-link style="font-size: 2em;" class="nav-link " to="/Member/1"
               active-class="active">會員</router-link>
           </li>
+          <li v-else class="nav-item">
+            <router-link style="font-size: 2em;" class="nav-link " to="/Register"
+              active-class="active">註冊</router-link>
+          </li>
         </ul>
         <form style="width: 50vw;" class="d-flex" role="search">
           <input v-model="searchString" class="form-control me-2 " type="search" placeholder="搜尋商品" aria-label="Search">
@@ -111,7 +115,7 @@ export default {
       }) 
     },
     getAccessToken(){
-      this.$store.dispatch("getAccessToken").then(console.log(this.$store.state.memberInfo)).catch(err=>{console.log(err.response)})
+      this.$store.dispatch("getAccessToken").catch(err=>{console.log(err.response)})
     },
    
     login() {

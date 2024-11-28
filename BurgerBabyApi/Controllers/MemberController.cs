@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using BurgerBabyApi.Models.ViewModel;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BurgerBabyApi.Controllers
 {
@@ -30,6 +31,25 @@ namespace BurgerBabyApi.Controllers
             var data = new { Name = member.Name, Phone = member.Phone, Address = member.Address, Email = member.Email };
             return Ok(data);
         }
+        [AllowAnonymous]
+        [HttpPost("register")]
+        public async Task<IActionResult> Create([FromBody] MemberCreateVM memberCreateVM)
+        {
+            try
+            {
+                var existMember = await _memberRepository.GetMemberByEmailAsync(memberCreateVM.Email);
+                if (existMember!=null)
+                {
+                    return BadRequest("這個Email已經註冊過了");
+                }
+                await _memberService.CreateMemberAsync(memberCreateVM.ToEntity().ToDto());
+                return Ok("註冊成功");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
         [HttpPost("change-memberinfo")]
         public async Task<IActionResult> Edit([FromBody] MemberVM memberVM)
         {
@@ -49,8 +69,8 @@ namespace BurgerBabyApi.Controllers
                     return BadRequest("JWT未包含用戶訊息");
                 var member = await _memberRepository.GetMemberByIdAsync(userId);
                 if (member == null) { return NotFound(); }
-                if(!string.IsNullOrEmpty(memberVM.Password))
-                member.Password = memberVM.Password;
+                if (!string.IsNullOrEmpty(memberVM.Password))
+                    member.Password = memberVM.Password;
                 if (!string.IsNullOrEmpty(memberVM.Phone))
                     member.Phone = memberVM.Phone;
                 if (!string.IsNullOrEmpty(memberVM.Address))

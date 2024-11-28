@@ -92,18 +92,26 @@ namespace BurgerBaby.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,RoleId,Phone,Address,Email,Password,Name")] MemberVM memberVM)
+        public async Task<IActionResult> Create([Bind("Id,RoleId,Phone,Address,Email,Password,Name")] MemberCreateVM memberCreateVM)
         {
             try
             {
                 var roles = await _roleRepository.GetRolesAsync();
+
                 if (ModelState.IsValid)
                 {
-                    await _memberService.CreateMemberAsync(memberVM.ToEntity().ToDto());
-                    return RedirectToAction(nameof(Index));
+                    var existMember = await _memberRepository.GetMemberByEmailAsync(memberCreateVM.Email);
+                    if (existMember != null) {
+                        ModelState.AddModelError("Email", "這個Email已經註冊過了");
+                    }
+                    else
+                    {
+                        await _memberService.CreateMemberAsync(memberCreateVM.ToEntity().ToDto());
+                        return RedirectToAction(nameof(Index));
+                    }
                 }
-                ViewData["RoleId"] = new SelectList(roles, "Id", "RoleName", memberVM.ToEntity().RoleId);
-                return View(memberVM);
+                 ViewData["RoleId"] = new SelectList(roles, "Id", "RoleName", memberCreateVM.ToEntity().RoleId);
+                return View(memberCreateVM);
             }
             catch (Exception ex)
             {

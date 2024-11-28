@@ -1,4 +1,10 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using BurgerBabyApi.Models.EFModel;
+using BurgerBabyApi.Models.Infa;
+using BurgerBabyApi.Models.Repo.Interface;
+using BurgerBabyApi.Models.Services.Interface;
+using BurgerBabyApi.Models.ViewModel;
+using BurgerBabyApi.Models.Services;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -7,12 +13,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Migrations.Operations;
 using System.Linq;
 using static System.Formats.Asn1.AsnWriter;
-using BurgerBabyApi.Models.Repo.Interface;
-using BurgerBabyApi.Models.Services.Interface;
-using BurgerBabyApi.Models.EFModel;
-using BurgerBabyApi.Models.Infa;
-using BurgerBabyApi.Models.ViewModel;
-using BurgerBabyApi.Models.Services;
 
 namespace BurgerBabyApi.Models.Services
 {
@@ -56,11 +56,11 @@ namespace BurgerBabyApi.Models.Services
                     foreach (var i in imgs)
                     {
                         i.IsCover = false;
-                        _imgRepository.Update(i);
+                        await _imgRepository.UpdateImgAsync(i.ToDto());
                     }
                 }
                 img.IsCover = true;
-                _imgRepository.Update(img);
+                await _imgRepository.UpdateImgAsync(img.ToDto());
                 await _imgRepository.SaveChangesAsync();
             }
         }
@@ -103,7 +103,7 @@ namespace BurgerBabyApi.Models.Services
             {
                 if (formFile != null)
                 {
-                    var oldFilePath = "wwwroot/savedata/"+ oldImg.SaveName;
+                    var oldFilePath = "wwwroot/savedata/" + oldImg.SaveName;
                     var exist = System.IO.File.Exists(oldFilePath);
                     if (exist == true)
                     {
@@ -122,7 +122,7 @@ namespace BurgerBabyApi.Models.Services
                 }
                 else
                 {
-                    _imgRepository.Update(img);
+                    await _imgRepository.UpdateImgAsync(img.ToDto());
                     await _imgRepository.SaveChangesAsync();
                 }
             }
@@ -150,7 +150,7 @@ namespace BurgerBabyApi.Models.Services
             }
 
             var pageResult = await GetImgsBysearchStringAsync(searchString, (int)pageIndex.Value, (int)pageSize.Value);
-            if (pageResult == null||pageResult.Items==null)
+            if (pageResult == null || pageResult.Items == null)
                 return new PageResultVM<ImgVM>();
 
             var ps = new PageService();

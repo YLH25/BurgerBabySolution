@@ -13,6 +13,19 @@ namespace BurgerBabyApi.Models.Repo.Interface
         {
             _context = context;
         }
+        public async Task<Member?> GetMemberByEmailAsync(string email)
+        {
+            return await _context.Members.Select(x => new Member
+            {
+                Id = x.Id,
+                Name = x.Name,
+                Email = x.Email,
+                Address = x.Address,
+                Password = x.Password,
+                RoleId = x.RoleId,
+                Phone = x.Phone,
+            }).FirstOrDefaultAsync(x => x.Email == email);
+        }
         public async Task<IEnumerable<Member>> GetMembersAsync()
         {
             return await _context.Members.Include(x => x.Role).Select(x => new Member
@@ -53,8 +66,8 @@ namespace BurgerBabyApi.Models.Repo.Interface
                 {
                     query = query.Where(x => x.Id == i ||
                                              x.Name.Contains(searchString) ||
-                                             x.Address.Contains(searchString)||
-                                             x.Role.RoleName.Contains(searchString)||
+                                             x.Address.Contains(searchString) ||
+                                             x.Role.RoleName.Contains(searchString) ||
                                              x.Email.Contains(searchString));
                 }
                 else
@@ -77,7 +90,8 @@ namespace BurgerBabyApi.Models.Repo.Interface
 
             return pageResult;
         }
-        public async Task CreateMemberAsync(MemberDTO memberDTO) {
+        public async Task CreateMemberAsync(MemberDTO memberDTO)
+        {
             AddMember(memberDTO.ToEntity());
             await SaveChangeAsync();
         }
@@ -109,9 +123,10 @@ namespace BurgerBabyApi.Models.Repo.Interface
         {
             await _context.SaveChangesAsync();
         }
-        public async Task<Member?> ValidateMemberAsync(string email, string password) { 
-        return await _context.Members.Where(x => x.Email == email).Where(x => x.Password == password).FirstOrDefaultAsync();
+        public async Task<Member?> ValidateMemberAsync(string email, string password)
+        {
+            return await _context.Members.Where(x => x.Email == email).Where(x => x.Password == password).FirstOrDefaultAsync();
         }
-  
+
     }
 }

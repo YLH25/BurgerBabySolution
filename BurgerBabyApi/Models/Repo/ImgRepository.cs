@@ -1,6 +1,6 @@
 ﻿using BurgerBabyApi.Models.EFModel;
-
 using BurgerBabyApi.Models.Infa;
+using BurgerBabyApi.Models.Repo.Interface;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -51,27 +51,34 @@ namespace BurgerBabyApi.Models.Repo.Interface
                 {
                     query = query.Where(x => x.Id == i ||
                                              x.Product.Name.Contains(searchString) ||
-                                             
                                              x.SaveName == searchString ||
                                              x.ImgName.Contains(searchString));
                 }
                 else
                 {
                     query = query.Where(x => x.Product.Name.Contains(searchString) ||
-                                           
                                              x.SaveName == searchString ||
                                              x.ImgName.Contains(searchString));
                 }
             }
-            else { 
-            query=_context.Imgs.Include(i => i.Product); 
+            else
+            {
+                query = _context.Imgs.Include(i => i.Product);
             }
-            var items = await query.Skip((pageIndex - 1) * pageSize).Take(pageSize).ToListAsync();
+            var items = await query.Skip((pageIndex - 1) * pageSize).Take(pageSize).Select(x => new Img
+            {
+                Id = x.Id,
+                Product = x.Product,
+                ProductId = x.ProductId,
+                ImgName = x.ImgName,
+                SaveName = x.SaveName,
+                IsCover = x.IsCover,
+            }).ToListAsync();
 
             var pageResult = new PageResult<Img>();
             pageResult.Items = items;
             pageResult.PageSize = pageSize;
-            pageResult.PageIndex=pageIndex;
+            pageResult.PageIndex = pageIndex;
             pageResult.TotalItems = query.Count();
             pageResult.TotalPages = (int)Math.Ceiling((double)pageResult.TotalItems / pageResult.PageSize);
 
@@ -79,7 +86,14 @@ namespace BurgerBabyApi.Models.Repo.Interface
         }
         public async Task<IEnumerable<Img>> GetImgsByProductIdAsync(int productId)
         {
-            return await _context.Imgs.Include(i => i.Product).Where(x => x.ProductId == productId).ToListAsync();
+            return await _context.Imgs.Include(i => i.Product).Where(x => x.ProductId == productId).Select(x => new Img
+            {
+                Id = x.Id,
+                ImgName = x.ImgName,
+                IsCover = x.IsCover,
+                ProductId = productId,
+                SaveName = x.SaveName,
+            }).ToListAsync();
         }
         public async Task AddImgAsync(ImgDTO imgDTO)
         {
@@ -99,7 +113,7 @@ namespace BurgerBabyApi.Models.Repo.Interface
             Update(img);
             await SaveChangesAsync();
         }
-        public void Update(Img img)
+        private void Update(Img img)
         {
             _context.Update(img);
         }
@@ -110,7 +124,7 @@ namespace BurgerBabyApi.Models.Repo.Interface
                 Delete(img);
             await SaveChangesAsync();
         }
-        public void Delete(Img img)
+        private void Delete(Img img)
         {
             _context.Remove(img);
         }

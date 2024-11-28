@@ -8,20 +8,20 @@ namespace BurgerBaby.Models.ViewModel
     {
         public int Id { get; set; }
         [Display(Name = "名字")]
-        public string Name { get; set; } = string.Empty;
+        public string? Name { get; set; }
         [Display(Name = "電話")]
-        public string Phone { get; set; } = string.Empty;
+        public string? Phone { get; set; }
         [Display(Name = "地址")]
-        public string Address { get; set; } = string.Empty;
+        public string? Address { get; set; }
         [Display(Name = "電子郵件")]
         [Required(ErrorMessage = "請輸入{0}")]
-        public string Email { get; set; } = string.Empty;
+        public string? Email { get; set; }
         [Display(Name = "密碼")]
         [Required(ErrorMessage = "請輸入{0}")]
-        public string Password { get; set; } = string.Empty;
+        public string? Password { get; set; }
         [Display(Name = "規則")]
         public int RoleId { get; set; }
-        public virtual Role Role { get; set; } = new Role();
+        public virtual Role? Role { get; set; }
 
 
     }

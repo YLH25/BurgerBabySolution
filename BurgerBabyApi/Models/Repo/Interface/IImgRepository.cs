@@ -13,8 +13,6 @@ namespace BurgerBabyApi.Models.Repo.Interface
         Task<PageResult<Img>> GetImgsBysearchStringAsync(string? searchString, int pageIndex, int pageSize);
         Task<IEnumerable<Img>> GetImgsAsync();
         Task<IEnumerable<Img>> GetImgsByProductIdAsync(int productId);
-        void Update(Img img);
-        void Delete(Img img);
         Task DeleteImgAsync(ImgDTO imgDTO);
         Task SaveChangesAsync();
     }

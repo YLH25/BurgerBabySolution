@@ -13,6 +13,19 @@ namespace BurgerBaby.Models.Repo.Interface
         {
             _context = context;
         }
+        public async Task<Member?> GetMemberByEmailAsync(string email)
+        {
+            return await _context.Members.Select(x => new Member
+            {
+                Id = x.Id,
+                Name = x.Name,
+                Email = x.Email,
+                Address = x.Address,
+                Password = x.Password,
+                RoleId = x.RoleId,
+                Phone = x.Phone,
+            }).FirstOrDefaultAsync(x=>x.Email==email);
+        }
         public async Task<IEnumerable<Member>> GetMembersAsync()
         {
             return await _context.Members.Include(x => x.Role).Select(x=>new Member { 

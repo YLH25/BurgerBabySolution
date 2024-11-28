@@ -65,7 +65,6 @@ namespace BurgerBaby.Models.Services
             return members;
         }
         public async Task CreateMemberAsync(MemberDTO memberDTO) {
-
             await _memberRepository.CreateMemberAsync(memberDTO);
         }
 

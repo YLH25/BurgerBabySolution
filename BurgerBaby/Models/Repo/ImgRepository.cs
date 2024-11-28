@@ -95,9 +95,8 @@ namespace BurgerBaby.Models.Repo.Interface
         }
         public async Task UpdateImgAsync(ImgDTO imgDTO)
         {
-            var img = imgDTO.ToEntity();
 
-            Update(img);
+            Update(imgDTO.ToEntity());
             await SaveChangesAsync();
         }
         private void Update(Img img)

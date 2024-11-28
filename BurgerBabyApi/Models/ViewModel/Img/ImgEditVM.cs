@@ -13,8 +13,8 @@ namespace BurgerBabyApi.Models.ViewModel
     {
         [Required]
         public int Id { get; set; }
-        public string ImgName { get; set; } = string.Empty;
-        public string SaveName { get; set; } = string.Empty;
+        public string? ImgName { get; set; } 
+        public string? SaveName { get; set; } 
         [Required]
         public int ProductId { get; set; }
         public bool? IsCover { get; set; }
