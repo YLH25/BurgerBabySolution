@@ -22,7 +22,7 @@
               </div>
               <div class="row featuretteCustom" style="margin-top: 5em;">
                   <div class="col-md-5">
-                      <img src="https://www.mcdonalds.com/content/dam/sites/tw/publication/desktop/CSR/0-1-csr-good-food-574x380-pc.jpg"
+                      <img src="https://localhost:7266/5.jpg"
                           style="width: 30em;height: 30em; border-radius: 15%;object-fit: cover;" alt="">
                   </div>
                   <div class="col-md-7">

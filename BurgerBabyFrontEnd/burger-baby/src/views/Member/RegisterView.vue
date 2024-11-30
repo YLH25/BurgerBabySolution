@@ -4,29 +4,29 @@
         <div class="" style="display: flex;min-width: 100%;;font-size: 4em;margin-top: 1em;margin-bottom: 0.5em;">
             <label for="member-name"
                 style="font-weight: 900; flex: 1;text-align: end;padding-right: 0.3em;">會員名稱:</label>
-            <div style="flex: 2;"><input v-model="name" id="member-name" style="width: 15em;" type="text" /></div>
+            <div style="flex: 2;"><input v-model="name" id="member-name" style="width: 15em;" autocomplete="off" type="text" /></div>
         </div>
         <div class="" style="display: flex;min-width: 100%;;font-size: 4em;margin: 0.5em;">
             <label for="member-email"
                 style="font-weight: 900; flex: 1;text-align: end;padding-right:  0.3em;">Email:</label>
-            <div style="flex: 2;"><input v-model="email" id="member-email" style="width: 15em;" type="email" /></div>
+            <div style="flex: 2;"><input v-model="email" id="member-email" style="width: 15em;"  autocomplete="off" type="email" /></div>
         </div>
         <div class="" style="display: flex;min-width: 100%;;font-size: 4em;margin: 0.5em;">
             <label for="member-password"
                 style="font-weight: 900; flex: 1;text-align: end;padding-right:  0.3em;">密碼:</label>
-            <div style="flex: 2;"><input v-model="password" id="member-password" style="width: 15em;" type="password" />
+            <div style="flex: 2;"><input v-model="password" id="member-password" style="width: 15em;" autocomplete="off" type="password" />
             </div>
         </div>
         <div class="" style="display: flex;min-width: 100%;;font-size: 4em;margin: 0.5em;">
             <label for="member-confirm-password"
                 style="font-weight: 900; flex: 1;text-align: end;padding-right:  0.3em;">確認密碼:</label>
             <div style="flex: 2;"><input v-model="confirmpassword" id="member-confirm-password" style="width: 15em;"
-                    type="password" /></div>
+                    type="password" autocomplete="off" /></div>
         </div>
         <div class="" style="display: flex;min-width: 100%;;font-size: 4em;margin: 0.5em;">
             <label for="member-phone"
                 style="font-weight: 900; flex: 1;text-align: end;padding-right: 0.3em;">電話:</label>
-            <div style="flex: 2;"><input v-model="phone" id="member-phone" style="width: 15em;" type="text" /></div>
+            <div style="flex: 2;"><input v-model="phone" id="member-phone" style="width: 15em;" autocomplete="off" type="text" /></div>
         </div>
         <div class="" style="display: flex;min-width: 100%;;font-size: 4em;margin: 0.5em;">
             <label for="member-address"

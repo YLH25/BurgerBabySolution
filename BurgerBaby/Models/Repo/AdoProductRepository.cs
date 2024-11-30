@@ -162,9 +162,6 @@ WHERE 1=1 {fliterQue}) as TotalItems,
                     .GroupBy(x => new
                     {
                         Id = x.Field<int>("Id"),
-                        Name = x.Field<string>("Name"),
-                        Price = x.Field<decimal>("Price"),
-                        Intro = x.Field<string>("Intro")
                     })
                     .Select(g => new Product
                     {
