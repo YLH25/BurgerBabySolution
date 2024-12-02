@@ -91,6 +91,18 @@ namespace BurgerBabyApi.Models.Repo.Interface
         public async Task AddImgAsync(ImgDTO imgDTO)
         {
             var img = imgDTO.ToEntity();
+            if (img.IsCover == true)
+            {
+                var oldCovers = await _context.Imgs.AsNoTracking().Where(x => x.ProductId == img.ProductId && x.IsCover == true).ToListAsync();
+                if (oldCovers.Count != 0)
+                {
+                    foreach (var oldImg in oldCovers)
+                    {
+                        oldImg.IsCover = false;
+                        _context.Imgs.Update(oldImg);
+                    }
+                }
+            }
             _context.Add(img);
             await _context.SaveChangesAsync();
         }
