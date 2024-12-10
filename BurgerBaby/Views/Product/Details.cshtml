@@ -68,9 +68,7 @@
             <th class="col">
                 圖片名
             </th>
-            <th class="col">
-                路徑
-            </th>
+
             <th class="col">
 
             </th>
@@ -91,7 +89,7 @@
                     @img.ImgName
                 </td>
                 <td class="col">@img.SaveName</td>
-                <td class="col">@imgPath</td>
+   
                 <td class="col">
                     <a asp-action="Edit" asp-route-id="@img.Id" asp-controller="Img">編輯圖片</a> | <a asp-action="Details" asp-route-id="@img.Id" asp-controller="Img">圖片訊息</a> | <a asp-action="Delete"
                                                                                                                                                                               asp-route-id="@img.Id" asp-controller="Img">刪除圖片</a>
