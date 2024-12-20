@@ -2,6 +2,7 @@
 using BurgerBabyApi.Models.Repo.Interface;
 using BurgerBabyApi.Models.Services.Interface;
 using BurgerBabyApi.Models.Services;
+using BurgerBabyApi.Models.Repo;
 
 namespace BurgerBabyApi.Models.Infa.ServiceCollection
 {

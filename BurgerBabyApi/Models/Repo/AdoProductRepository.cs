@@ -6,8 +6,10 @@ using NuGet.Packaging;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.Data;
+using BurgerBabyApi.Models.Repo.Interface;
 
-namespace BurgerBabyApi.Models.Repo.Interface
+
+namespace BurgerBabyApi.Models.Repo
 {
 
     public class AdoProductRepository : IProductRepository
