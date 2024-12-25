@@ -10,7 +10,7 @@
               </button>
             </div>
             <div id="carouselExample" class="carousel slide carousel-img-area"
-              style="width: 70rem;height: 100%;position: absolute;">
+              style="width: 70em;height: 100%;position: absolute;">
               <div class="carousel-inner" style="height: 100%;">
                 <div class="carousel-item active" style="height: 100%;">
                   <img class="carousel-img d-block" v-if="data.imgs && data.imgs.length > 0"
@@ -32,8 +32,8 @@
           <div class="intro-section" style="position: relative;">
             <div class="title p-1">{{ data.name }}</div>
             <div style="position: absolute;right: 0;bottom: 0;" class="info mt-3 p-5">
-              <span style="font-size: 2rem;">價格:</span>
-              <span style="color: red;font-size: 2rem;">{{ data.price }}</span>
+              <span style="font-size: 2em;">價格:</span>
+              <span style="color: red;font-size: 2em;">{{ data.price }}</span>
             </div>
           </div>
 
@@ -41,9 +41,9 @@
 
         <hr>
         <div class="intro ">
-          <b class="p-5" style="font-size: 3rem;">商品介紹</b>
+          <b class="p-5" style="font-size: 3em;">商品介紹</b>
 
-          <p class="p-5" style="font-size: 2rem;min-height: 30rem;word-wrap: break-word;">
+          <p class="p-5" style="font-size: 2em;min-height: 30em;word-wrap: break-word;">
             {{ data.intro }}
           </p>
         </div>
@@ -138,17 +138,17 @@ export default {
 <style>
 .main-section {
   min-height: 100vh;
-  min-width: 140rem;
+  min-width: 140em;
 }
 .carousel-area {
-  width: 82rem;
+  width: 82em;
   position: relative;
-  height: 50rem;
+  height: 50em;
   
 }
 
 .carousel-img {
-  width: 80rem;
+  width: 80em;
   height: 100%;
   object-fit: cover;
 }
@@ -156,7 +156,7 @@ export default {
 
 .left-angle-area,
 .right-angle-area {
-  width: 6rem;
+  width: 6em;
   height: 100%;
   display: flex;
   justify-content: center;
@@ -176,7 +176,7 @@ export default {
 .right-angle {
   opacity: 0.5;
   color: rgb(145, 140, 140);
-  font-size: 7rem;
+  font-size: 7em;
 }
 
 .left-angle-btn:hover .left-angle,
@@ -185,7 +185,7 @@ export default {
 }
 
 .carousel-img-area {
-  left: 6rem;
+  left: 6em;
   position: absolute;
 }
 
@@ -199,10 +199,10 @@ export default {
 
 .intro-section {
   vertical-align: top;
-  margin-left: 7rem;
+  margin-left: 7em;
   display: inline-block;
-  min-width: 40rem;
-  height: 60rem;
+  min-width: 40em;
+  height: 60em;
 
 
 
@@ -210,13 +210,13 @@ export default {
 
 .title {
   font-weight: 1000;
-  font-size: 4rem;
+  font-size: 4em;
   overflow-wrap: break-word;
 
 }
 
 
 .intro {
-  margin: 5rem 10rem;
+  margin: 5em 10em;
 }
 </style>

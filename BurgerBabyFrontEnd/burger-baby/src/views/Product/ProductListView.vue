@@ -1,18 +1,18 @@
 <template>
     <div >
-        <div style="min-height:calc( 100vh - 16rem );">
+        <div style="min-height:calc( 100vh - 16em );">
             <div class="album py-4" >
                 <div class="container-fluid">
                     <div id="imgcontainer"
                         class="row  row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5 g-3 ">
                         <div class="col" v-for="(item, index) in data.items" :key=" index">
                             <div class="card shadow-sm">
-                                <img class="cardImg" :style="{ objectFit: 'cover', height: '24rem' }"
+                                <img class="cardImg" :style="{ objectFit: 'cover', height: '24em' }"
                                     :src="getCover(item) ?? ''" @click="showImg(getCover(item)??'')">
                                 <div class="card-body">
-                                    <b style="font-size:1.5rem;" v-text="item.name" class="ProductName"> </b>
+                                    <b style="font-size:1.5em;" v-text="item.name" class="ProductName"> </b>
 
-                                    <p :style="{ height: '2rem' }" class="card-text">{{ (item.intro ?? '').substring(0,
+                                    <p :style="{ height: '2em' }" class="card-text">{{ (item.intro ?? '').substring(0,
                                         40)
                                         }}{{ item.intro &&
                                             item.intro.length > 20 ? '...' : '' }}</p>
