@@ -1,5 +1,6 @@
 <template>
-    <div class="d-flex  "
+    <form @submit.prevent="register" >
+        <div class="d-flex  "
         style="justify-content:space-evenly; min-height: 100vh;align-items:center;flex-direction: column;">
         <div class="" style="display: flex;min-width: 100%;;font-size: 4em;margin-top: 1em;margin-bottom: 0.5em;">
             <label for="member-name"
@@ -36,9 +37,11 @@
         </div>
         <div class=""
             style="display: flex;min-width: 100%;;font-size: 4em;margin: 0.5em;align-items: center;justify-content: center;">
-            <button class="btn btn-success" @click="register" style="font-size: 0.5em;">註冊</button>
+            <button class="btn btn-success" type="submit" style="font-size: 0.5em;">註冊</button>
         </div>
     </div>
+    </form>
+   
 </template>
 
 <script>
@@ -58,7 +61,8 @@ export default {
     methods: {
 
         register() {
-            if (this.password == this.confirmpassword) {
+            var valid=this.validMemberInfo()
+            if (!valid) {
                 var url = "https://localhost:7266/register";
                  axios.post(url, {
                     name: this.name,
@@ -71,8 +75,34 @@ export default {
                 )
             }
             else {
-                alert("請確認密碼與密碼是否相同")
+                alert(valid)
             }
+        },
+        validMemberInfo(){
+            if(this.name.length<1){
+                return"請輸入姓名"
+            }
+            //todo 正則
+            if(this.email.indexOf('@')==-1)
+            {
+                return"請輸入正確Email"
+            }
+            if(this.password<1)
+            {
+                return "請輸入密碼"
+            }
+            if (!this.password == this.confirmpassword){
+                return "請確認密碼與密碼是否相同"
+            }
+            if(!this.phone){
+                return "請輸入電話"
+            }
+            if(!this.address)   
+            {
+                return "請輸入地址"
+            }
+            
+
         }
     }
 }
