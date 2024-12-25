@@ -2,7 +2,7 @@
   <div>
     <nav class="navbar navbar-expand-md navbar-warning fixed-top bg-warning ">
       <router-link class="navbar-brand" to="/">
-        <img id="food-icon" :style="{ width: '4rem', height: '' }" src="../src//assets/foodicon.png" alt="">
+        <img id="food-icon" :style="{ width: '4em', height: '' }" src="../src//assets/foodicon.png" alt="">
       </router-link>
 
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
@@ -12,24 +12,24 @@
       <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
         <ul class="navbar-nav mb-2 mb-md-0">
           <li style="" class="nav-item">
-            <router-link style="font-size: 2rem;" class="nav-link " to="/" active-class="active">主頁</router-link>
+            <router-link style="font-size: 2em;" class="nav-link " to="/" active-class="active">主頁</router-link>
           </li>
           <li class="nav-item">
-            <router-link style="font-size: 2rem;" class="nav-link " to="/Products"
+            <router-link style="font-size: 2em;" class="nav-link " to="/Products"
               active-class="active">商品</router-link>
           </li>
           <li v-if="this.$store.state.isLoggedIn" class="nav-item">
-            <router-link style="font-size: 2rem;" class="nav-link " to="/Member/1"
+            <router-link style="font-size: 2em;" class="nav-link " to="/Member/1"
               active-class="active">會員</router-link>
           </li>
           <li v-else class="nav-item">
-            <router-link style="font-size: 2rem;" class="nav-link " to="/Register"
+            <router-link style="font-size: 2em;" class="nav-link " to="/Register"
               active-class="active">註冊</router-link>
           </li>
         </ul>
         <form style="width: 50vw;" class="d-flex" role="search">
           <input v-model="searchString" class="form-control me-2 " type="search" placeholder="搜尋商品" aria-label="Search">
-          <button style="width: 5rem;" @click="search" class="btn btn-outline-success" type="submit">搜尋</button>
+          <button style="width: 5em;" @click="search" class="btn btn-outline-success" type="submit">搜尋</button>
         </form>
         <div class="memberInfo me-5 p-1">
           <div v-if="$store.state.isLoggedIn" class="d-flex "> <span class="me-5 fs-1">{{
@@ -40,10 +40,10 @@
             <span class="d-flex me-5" >
               <div class="d-flex" style="flex-direction: column;">
                 <div class="p-1">
-                  <label style="width: 4.5rem;" for="email">電子郵件:</label> <input v-model="email" id="email" type="email" placeholder="請輸入電子郵件">
+                  <label style="width: 4.5em;" for="email">電子郵件:</label> <input v-model="email" id="email" type="email" placeholder="請輸入電子郵件">
                 </div>
                 <div class="p-1">
-                <label style="width: 4.5rem;" for="password">密碼:</label>   <input v-model="password" id="password" type="password" placeholder="請輸入密碼">
+                <label style="width: 4.5em;" for="password">密碼:</label>   <input v-model="password" id="password" type="password" placeholder="請輸入密碼">
                </div>
               </div>
             </span>

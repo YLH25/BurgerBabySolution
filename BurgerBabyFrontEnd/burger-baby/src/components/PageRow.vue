@@ -1,7 +1,7 @@
 <template>
-    <div style="display: flex;justify-content: center;align-items: center;">
+    <div style="display:flex;justify-content: center;align-items: center;">
         <div class="p-5">
-            <div style="display: flex; flex-direction: row;">
+            <div style="display: flex; flex-direction: row; ">
                 <ul v-if="data.totalPages && data.totalPages > 1" class="pagination justify-content-center ">
                     <li v-if="pageIndex == 1 && data.totalPages && data.totalPages > 1" class="page-item disabled">
                         <a class="page-link" href="#">上一頁</a>
@@ -36,8 +36,8 @@
                     </li>
 
                 </ul>
-                <input v-if="data.totalPages && data.totalPages > 1" style="height: 38px;" id="pageIndexInput" type="text" placeholder="跳轉至" />
-                <select style="height: 38px;" v-model="localPageSize" name="" id="">
+                <input v-if="data.totalPages && data.totalPages > 1" style="font-size: 1rem;height: 2.5rem;" id="pageIndexInput" type="text" placeholder="跳轉至" />
+                <select style="font-size: 1rem;height: 2.5rem;" v-model="localPageSize" name="" id="">
                     <option v-for="(value,index) in pageSizeOptions" :value="value" :key="index">{{ "單頁商品顯示數量:"+value }}</option>
                 </select>
 
