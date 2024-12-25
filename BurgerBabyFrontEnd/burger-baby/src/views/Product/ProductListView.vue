@@ -124,7 +124,7 @@ export default {
                 },
                
                 // withCredentials:true
-            }).then(res => { this.data = res.data; console.log(this.data) })
+            }).then(res => { this.data = res.data; })
                 .catch(err => {
                     alert(err.toString());
 

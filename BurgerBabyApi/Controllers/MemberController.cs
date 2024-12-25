@@ -19,17 +19,27 @@ namespace BurgerBabyApi.Controllers
             _memberService = memberService;
             _memberRepository = memberRepository;
         }
-        [HttpGet("member/{id}")]
-        public async Task<IActionResult> Index(int id)
+        [HttpGet("member")]
+        public async Task<IActionResult> GetMemberInfo()
         {
-            var member = await _memberRepository.GetMemberByIdAsync(id);
-            if (member == null)
+            try
             {
-                return NotFound();
-            }
+                var claims = User.Claims.ToList();
+                var id = Convert.ToInt32(claims[0].Value);
+                var member = await _memberRepository.GetMemberByIdAsync(id);
+                if (member == null)
+                {
+                    return NotFound();
+                }
 
-            var data = new { Name = member.Name, Phone = member.Phone, Address = member.Address, Email = member.Email };
-            return Ok(data);
+                var data = new { Name = member.Name, Phone = member.Phone, Address = member.Address, Email = member.Email };
+                return Ok(data);
+
+            }
+            catch {
+                return BadRequest("獲取會員資料失敗");
+            }
+      
         }
         [AllowAnonymous]
         [HttpPost("register")]
@@ -37,11 +47,14 @@ namespace BurgerBabyApi.Controllers
         {
             try
             {
+                if(memberCreateVM.Email==null)
+                    return BadRequest("請填入Email");
                 var existMember = await _memberRepository.GetMemberByEmailAsync(memberCreateVM.Email);
                 if (existMember!=null)
                 {
                     return BadRequest("這個Email已經註冊過了");
                 }
+                memberCreateVM.RoleId = 2;
                 await _memberService.CreateMemberAsync(memberCreateVM.ToEntity().ToDto());
                 return Ok("註冊成功");
             }
@@ -101,30 +114,3 @@ namespace BurgerBabyApi.Controllers
 
 
 
-//[HttpPost("change-password")]
-//public async Task<IActionResult> ChangePassword([FromBody] MemberVM memberVM)
-//{
-//    try
-//    {
-//        var authorizationHeader = HttpContext.Request.Headers["Authorization"].ToString();
-//        if (string.IsNullOrEmpty(authorizationHeader) || !authorizationHeader.StartsWith("Bearer "))
-//        {
-//            return Unauthorized("沒有有效的JWT");
-//        }
-//        var jwt = authorizationHeader.Substring("Bearer ".Length).Trim();
-//        var handler = new JwtSecurityTokenHandler();
-//        var token = handler.ReadJwtToken(jwt);
-//        var userIdFromClaim = token.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;
-//        var isInt = int.TryParse(userIdFromClaim, out int userId);
-//        if (isInt == false)
-//            return BadRequest("JWT未包含用戶訊息");
-//        var member = await _memberRepository.GetMemberByIdAsync(userId);
-//        if (member == null) { return NotFound(); }
-//        member.Password = memberVM.Password;
-//        await _memberRepository.EditMemberAsync(member.ToDto());
-//        return Ok("修改成功");
-//    }
-//    catch (Exception ex)
-//    {
-//        return BadRequest("修改失敗," + ex.Message);
-//    }

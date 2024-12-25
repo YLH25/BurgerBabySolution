@@ -71,7 +71,7 @@ export default {
     },
     data() {
       return {
-        localPageSize:1,
+        localPageSize:this.$route.query.pageSize??1,
         pageSizeOptions:[1,2,5,10,100]
       }
     },

@@ -128,6 +128,8 @@ export default {
         if(res.status==200)
       {
           this.email="",
+
+          
         this.password=""
         this.getAccessToken()
       }

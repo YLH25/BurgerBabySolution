@@ -186,15 +186,16 @@ export default {
         },
         getMember() {
             //更改測試網址
-            const url = `https://localhost:7266/member/1`
+            const url = `https://localhost:7266/member`
+            console.log(this.$store.state.memberInfo)
             axios.get(url, {
                 headers: {
                     authorization: "Bearer " + this.$store.state.accessToken
                 }
             }).then(res => {
                 this.data = res.data
-                this.tryCount = 0,
-                    console.log(this.data)
+                this.tryCount = 0
+                    
             }).catch(() => {
                 if (this.tryCount == 0) {
                     this.tryCount++

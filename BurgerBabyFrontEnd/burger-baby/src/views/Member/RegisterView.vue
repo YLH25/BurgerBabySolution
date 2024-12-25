@@ -59,14 +59,7 @@ export default {
 
         register() {
             if (this.password == this.confirmpassword) {
-                var url = "https://localhost:7266/register"
-                console.log({
-                    name: this.name,
-                    email: this.email,
-                    password: this.password,
-                    phone: this.phone,
-                    address: this.address
-                });
+                var url = "https://localhost:7266/register";
                  axios.post(url, {
                     name: this.name,
                     email: this.email,

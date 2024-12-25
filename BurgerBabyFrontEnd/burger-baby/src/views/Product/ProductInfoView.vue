@@ -78,13 +78,11 @@ export default {
   },
   methods: {
     getData() {
-      console.log(5445)
+
       const url = `https://localhost:7266/Product/${this.$route.params.id}`;
     axios.get(url)
         .then((res) => {
-          console.log(res.data)
             this.data = res.data; 
-            console.log(this.data)
         })
         .catch((ex) => {
             alert("錯誤: " + ex.message);
