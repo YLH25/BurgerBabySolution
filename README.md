@@ -20,7 +20,7 @@
 
 採用 Cookie 驗證登入，返回 HttpOnly 的 Refresh Token，並生成 JWT Access Token。
 
-使用短時效 Access Token 降低伺服器負擔，並減少 CSRF 與 XSS 攻擊。
+使用短時效 Access Token 降低伺服器負擔，並且將Jwt存在VUEX參數減少整體專案受到CSRF及XSS攻擊的可能性。
 
 
 3.前台前端系統專案 (Vue)
