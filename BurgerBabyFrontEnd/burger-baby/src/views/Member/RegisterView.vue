@@ -4,17 +4,20 @@
         <div class="" style="display: flex;min-width: 100%;;font-size: 4em;margin-top: 1em;margin-bottom: 0.5em;">
             <label for="member-name"
                 style="font-weight: 900; flex: 1;text-align: end;padding-right: 0.3em;">會員名稱:</label>
-            <div style="flex: 2;"><input v-model="name" id="member-name" style="width: 15em;" autocomplete="off" type="text" /></div>
+            <div style="flex: 2;"><input v-model="name" id="member-name" style="width: 15em;" autocomplete="off"
+                    type="text" /></div>
         </div>
         <div class="" style="display: flex;min-width: 100%;;font-size: 4em;margin: 0.5em;">
             <label for="member-email"
                 style="font-weight: 900; flex: 1;text-align: end;padding-right:  0.3em;">Email:</label>
-            <div style="flex: 2;"><input v-model="email" id="member-email" style="width: 15em;"  autocomplete="off" type="email" /></div>
+            <div style="flex: 2;"><input v-model="email" id="member-email" style="width: 15em;" autocomplete="off"
+                    type="email" /></div>
         </div>
         <div class="" style="display: flex;min-width: 100%;;font-size: 4em;margin: 0.5em;">
             <label for="member-password"
                 style="font-weight: 900; flex: 1;text-align: end;padding-right:  0.3em;">密碼:</label>
-            <div style="flex: 2;"><input v-model="password" id="member-password" style="width: 15em;" autocomplete="off" type="password" />
+            <div style="flex: 2;"><input v-model="password" id="member-password" style="width: 15em;" autocomplete="off"
+                    type="password" />
             </div>
         </div>
         <div class="" style="display: flex;min-width: 100%;;font-size: 4em;margin: 0.5em;">
@@ -26,7 +29,8 @@
         <div class="" style="display: flex;min-width: 100%;;font-size: 4em;margin: 0.5em;">
             <label for="member-phone"
                 style="font-weight: 900; flex: 1;text-align: end;padding-right: 0.3em;">電話:</label>
-            <div style="flex: 2;"><input v-model="phone" id="member-phone" style="width: 15em;" autocomplete="off" type="text" /></div>
+            <div style="flex: 2;"><input v-model="phone" id="member-phone" style="width: 15em;" autocomplete="off"
+                    type="text" /></div>
         </div>
         <div class="" style="display: flex;min-width: 100%;;font-size: 4em;margin: 0.5em;">
             <label for="member-address"
@@ -56,22 +60,46 @@ export default {
         }
     },
     methods: {
-
+        valid() {
+            const pattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+            if (this.name.length<=0) {
+                return "名字必填";
+            }
+            if (!pattern.test(this.email)) {
+                return "請輸入正確Email"
+            }
+           
+            if (this.password.length<=0) {
+                return "密碼必填";
+            }
+            if (this.password != this.confirmpassword) {
+                return "請確認密碼與密碼是否相同";
+            }
+           
+            if (this.phone.length<=0) {
+                return "電話必填";
+            }
+            if (this.address.length<=0) {
+                return "地址必填";
+            }
+            return null ;
+        },
         register() {
-            if (this.password == this.confirmpassword) {
+            const errMessage=this.valid();
+            if (!errMessage) {
                 var url = "https://localhost:7266/register";
-                 axios.post(url, {
+                axios.post(url, {
                     name: this.name,
                     email: this.email,
                     password: this.password,
                     phone: this.phone,
                     address: this.address
-                },{}).then(res => { alert(res.data),this.$router.push("/") }).catch(
-                    err=>{alert(err.response.data)}  
+                }, {}).then(res => { alert(res.data), this.$router.push("/") }).catch(
+                    err => { alert(err.response.data) }
                 )
             }
             else {
-                alert("請確認密碼與密碼是否相同")
+                alert(errMessage)
             }
         }
     }
