@@ -1,7 +1,7 @@
 <template>
   <div>
       <div class="">
-          <img src="https://localhost:7266/home/3.jpg"
+          <img :src="`${this.$store.state.apiUrl}/home/3.jpg`"
               style=" object-fit: cover; width: 100%;height:30em">
 
       </div>
@@ -16,13 +16,13 @@
                       </p>
                   </div>
                   <div class="col-md-5">
-                      <img src="https://localhost:7266//home/5.png"
+                      <img :src="`${this.$store.state.apiUrl}/home/5.png`"
                           style="width: 30em;height: 30em;border-radius: 15%;object-fit:cover" alt="">
                   </div>
               </div>
               <div class="row featuretteCustom" style="margin-top: 5em;">
                   <div class="col-md-5">
-                      <img src="https://localhost:7266/home/5.jpg"
+                      <img :src="`${this.$store.state.apiUrl}/home/5.jpg`"
                           style="width: 30em;height: 30em; border-radius: 15%;object-fit: cover;" alt="">
                   </div>
                   <div class="col-md-7">

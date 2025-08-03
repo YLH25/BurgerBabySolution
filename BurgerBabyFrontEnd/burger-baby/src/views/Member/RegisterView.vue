@@ -87,7 +87,7 @@ export default {
         register() {
             const errMessage=this.valid();
             if (!errMessage) {
-                var url = "https://localhost:7266/register";
+                var url = `${this.$store.state.apiUrl}/register`;
                 axios.post(url, {
                     name: this.name,
                     email: this.email,

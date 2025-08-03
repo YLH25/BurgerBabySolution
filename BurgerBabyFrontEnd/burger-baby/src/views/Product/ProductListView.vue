@@ -95,7 +95,7 @@ export default {
     },
     methods: {
         getData() {
-            var url = `https://localhost:7266/Products`;
+            var url = `${this.$store.state.apiUrl}/Products`;
             if (this.$route.query.searchString) {
                 this.searchString = this.$route.query.searchString;
 
@@ -134,7 +134,7 @@ export default {
             if (item && item.imgs && item.imgs.length > 0) {
                 const coverImage = item.imgs.find(x => x.isCover === true);
                 if (coverImage) {
-                    return `https://localhost:7266/${coverImage.saveName}`;
+                    return `${this.$store.state.apiUrl}/${coverImage.saveName}`;
                 }
             }
             return '';

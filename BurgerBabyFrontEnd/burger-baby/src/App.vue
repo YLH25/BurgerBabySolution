@@ -89,8 +89,6 @@ footer {
 <script>
 import axios from 'axios';
 
-
-
 export default {
 
   data() {
@@ -119,7 +117,7 @@ export default {
     },
    
     login() {
-      const url = 'https://localhost:7266/login';
+      const url = `${this.$store.state.apiUrl}/login`;
       axios.post(url, {
         email: this.email,
         password: this.password
@@ -138,7 +136,7 @@ export default {
 
     },
     logout(){
-      const url = 'https://localhost:7266/logout'
+      const url = `${this.$store.state.apiUrl}/logout`
       axios.post(url,{
 
       },{withCredentials:true}).then(this.$store.commit("changeLoginStatus",false),this.$store.commit("changeAccessToken",""));

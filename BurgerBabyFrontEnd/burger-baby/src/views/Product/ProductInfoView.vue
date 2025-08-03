@@ -14,8 +14,8 @@
               <div class="carousel-inner" style="height: 100%;">
                 <div class="carousel-item active" style="height: 100%;">
                   <img class="carousel-img d-block" v-if="data.imgs && data.imgs.length > 0"
-                    :src="`https://localhost:7266/` + data.imgs[currentImageIndex].saveName"
-                    @click="showImg(`https://localhost:7266/` + data.imgs[currentImageIndex].saveName)"
+                    :src="`${this.$store.state.apiUrl}` + data.imgs[currentImageIndex].saveName"
+                    @click="showImg(`${this.$store.state.apiUrl}` + data.imgs[currentImageIndex].saveName)"
                     style="object-fit:  cover;height: 100%;">
                 </div>
               </div>
@@ -79,7 +79,7 @@ export default {
   methods: {
     getData() {
 
-      const url = `https://localhost:7266/Product/${this.$route.params.id}`;
+      const url = `${this.$store.state.apiUrl}/Product/${this.$route.params.id}`;
     axios.get(url)
         .then((res) => {
             this.data = res.data; 

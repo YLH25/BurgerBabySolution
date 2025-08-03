@@ -6,7 +6,8 @@ export default createStore({
     return {
       accessToken: "",
       isLoggedIn: false,
-      memberInfo: {}
+      memberInfo: {},
+      apiUrl:"https://localhost:7266"
     }
   },
   getters: {
@@ -35,12 +36,17 @@ export default createStore({
       else{
         state.memberInfo = {}
       }
+    },
+    changeMemberName(state,newName){
+      if(state.memberInfo.name){
+        state.memberInfo.name=newName;
+      }
     }
 
   },
   actions: {
     async getAccessToken(store) {
-      const url = 'https://localhost:7266/AccessToken';
+      const url = `${this.state.apiUrl}/AccessToken`;
       let resData = {};
       try {
         const res = await axios.post(url, {}, { withCredentials: true });
