@@ -31,9 +31,8 @@ namespace BurgerBabyApi.Controllers
                 {
                     return NotFound();
                 }
-
-                var data = new { Name = member.Name, Phone = member.Phone, Address = member.Address, Email = member.Email };
-                return Ok(data);
+                var memberVM = new MemberVM() { Name = member.Name, Phone = member.Phone, Address = member.Address, Email = member.Email };
+                return Ok(memberVM);
 
             }
             catch {
@@ -63,7 +62,7 @@ namespace BurgerBabyApi.Controllers
                 return BadRequest(ex.Message);
             }
         }
-        [HttpPost("change-memberinfo")]
+        [HttpPatch("member")]
         public async Task<IActionResult> Edit([FromBody] MemberVM memberVM)
         {
             try

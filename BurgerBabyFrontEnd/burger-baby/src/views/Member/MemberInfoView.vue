@@ -9,7 +9,7 @@
             會員名稱:
           </th>
           <td v-if="!isEditName" class="" style="font-size: 3em">
-            {{ data.name
+            {{ this.$store.state.memberInfo.name
             }}<a href="#" @click.prevent="toggleMemberInfo('name')"
               ><i
                 class="fa-solid fa-pen-to-square fa-2xs ms-3"
@@ -28,7 +28,9 @@
           >
             Email:
           </th>
-          <td class="" style="font-size: 3em">{{ data.email }}</td>
+          <td class="" style="font-size: 3em">
+            {{ this.$store.state.memberInfo.email }}
+          </td>
         </tr>
         <tr>
           <th
@@ -60,7 +62,7 @@
             電話:
           </th>
           <td v-if="!isEditPhone" class="" style="font-size: 3em">
-            {{ data.phone
+            {{ this.$store.state.memberInfo.phone
             }}<a href="#" @click.prevent="toggleMemberInfo('phone')"
               ><i
                 class="fa-solid fa-pen-to-square fa-2xs ms-3"
@@ -80,7 +82,7 @@
             地址:
           </th>
           <td v-if="!isEditAddress" class="" style="font-size: 3em">
-            {{ data.address
+            {{ this.$store.state.memberInfo.address
             }}<a href="#" @click.prevent="toggleMemberInfo('address')"
               ><i
                 class="fa-solid fa-pen-to-square fa-2xs ms-3"
@@ -108,8 +110,12 @@ export default {
       isEditPassword: false,
       password: "",
       confirmPassword: "",
-      tryCount: 0,
-      data: {},
+      data: {
+        name: "",
+        phone: "",
+        address: "",
+        email: "",
+      },
     };
   },
   methods: {
@@ -130,170 +136,118 @@ export default {
       }
     },
     async changeMemberInfo(changeField) {
-      const url = `${this.$store.state.apiUrl}/change-memberinfo/`;
+      console.log(1)
+      const url = `${this.$store.state.apiUrl}/member`;
+      let payload = {};
       switch (changeField) {
         case "name":
-          try {
-            if (this.data.name.length < 2) {
-              throw new Error("新名稱至少要2字以上");
-            }
+          if (this.data.name.length < 2) {
+            alert("新名稱至少要2字以上");
+            return;
+          }
+          payload = { name: this.data.name };
+          break;
 
-            const res = await axios.post(
-              url,
-              { name: this.data.name },
-              {
-                headers: {
-                  authorization: "Bearer " + this.$store.state.accessToken,
-                },
-                withCredentials: true,
-              }
-            );
-            this.isEditName = false;
-            alert(res.data);
-            this.$store.commit("changeMemberName",this.data.name);
-          } catch (error) {
-            alert(error.message);
-          }
-          break;
         case "phone":
-          try {
-            if (this.data.phone.length < 10) {
-              throw new Error("新電話號碼要10字以上");
-            }
-            const res = await axios.post(
-              url,
-              { phone: this.data.phone },
-              {
-                headers: {
-                  authorization: "Bearer " + this.$store.state.accessToken,
-                },
-                withCredentials: true,
-              }
-            );
-            this.isEditPhone = false;
-            alert(res.data);
-          } catch (error) {
-            alert(error.message);
+          if (this.data.phone.length < 10) {
+            alert("新電話號碼要10字以上");
+            return;
           }
+          payload = { phone: this.data.phone };
           break;
+
         case "address":
-          try {
-            const res = await axios.post(
-              url,
-              { address: this.data.address },
-              {
-                headers: {
-                  authorization: "Bearer " + this.$store.state.accessToken,
-                },
-                withCredentials: true,
-              }
-            );
-            this.isEditAddress = false;
-            alert(res.data);
-          } catch (error) {
-            alert(error.message);
+          if (!this.data.address) {
+            alert("地址不能為空");
+            return;
           }
+          payload = { address: this.data.address };
           break;
         case "password":
-          try {
-            if (this.password != this.confirmPassword) {
-              throw new Error("新密碼與確認密碼不同請重新輸入");
-            }
-            if (this.password.length < 2) {
-              throw new Error("新密碼至少要2字以上");
-            }
-
-            const res = await axios.post(
-              url,
-              { password: this.password },
-              {
-                headers: {
-                  authorization: "Bearer " + this.$store.state.accessToken,
-                },
-                withCredentials: true,
-              }
-            );
-            this.isEditPassword = false;
-            this.password = "";
-            this.confirmPassword = "";
-            alert(res.data);
-          } catch (error) {
-            alert(error.message);
+          if (this.password !== this.confirmPassword) {
+            alert("新密碼與確認密碼不同，請重新輸入");
+            return;
           }
+          if (this.password.length < 2) {
+            alert("新密碼至少要2字以上");
+            return;
+          }
+          payload = { password: this.password };
           break;
       }
-    },
-    async changePassword() {
       try {
-        if (this.password != this.confirmPassword) {
-          throw new Error("新密碼與確認密碼不同請重新輸入");
+        console.log(2)
+        const res = await this.updateMember(url, payload);
+        if (changeField === "name") this.isEditName = false;
+        if (changeField === "phone") this.isEditPhone = false;
+        if (changeField === "address") this.isEditAddress = false;
+        if (changeField === "password") {
+          this.isEditPassword = false;
+          this.password = "";
+          this.confirmPassword = "";
         }
-        if (this.password.length < 2) {
-          throw new Error("新密碼至少要2字以上");
-        }
-        const url = `${this.$store.state.apiUrl}/change-password/`;
-        const res = await axios.post(
-          url,
-          { password: this.password },
-          {
-            headers: {
-              authorization: "Bearer " + this.$store.state.accessToken,
-            },
-            withCredentials: true,
-          }
-        );
-        this.isEditPassword = false;
-        this.password = "";
-        this.confirmPassword = "";
-        alert(res.data);
-      } catch (error) {
-        alert(error.message);
+        
+          alert(res.data);
+          await this.$store.dispatch("getMember");
+          this.getMemberInfo();
+      } catch (err) {
+        alert(err.message);
+        await this.$store.commit("changeAccessToken", "");
+        await this.$store.commit("changeLoginStatus", false);
       }
     },
-    getMember() {
-      //更改測試網址
-      const url = `${this.$store.state.apiUrl}/member`;
-      console.log(this.$store.state.memberInfo);
-      axios
-        .get(url, {
+
+    async updateMember(url, obj) {
+      try {
+        const res = await axios.patch(url, obj, {
           headers: {
             authorization: "Bearer " + this.$store.state.accessToken,
           },
-        })
-        .then((res) => {
-          this.data = res.data;
-          this.tryCount = 0;
-        })
-        .catch(() => {
-          if (this.tryCount == 0) {
-            this.tryCount++;
-            this.$store
-              .dispatch("getAccessToken")
-              .then(() => {
-                this.getMember();
-              })
-              .catch(() => {
-                alert("錯誤請登入1"), this.goBackAfterTimeout();
-              });
-          } else {
-            alert("錯誤請登入");
-            this.goBackAfterTimeout();
-          }
+          withCredentials: true,
         });
+        return res;
+      } catch (err) {
+        if (err.response?.status == 401) {
+          try {
+            const accessTokenIsGottern = await this.$store.dispatch(
+              "getAccessToken"
+            );
+            if (!accessTokenIsGottern) {
+              throw new Error("取得AccessToken失敗");
+            }
+            const res = await axios.patch(url, obj, {
+              headers: {
+                authorization: "Bearer " + this.$store.state.accessToken,
+              },
+              withCredentials: true,
+            });
+            return res;
+          } catch (err2) {
+            throw new Error("編輯會員資料發生錯誤原因為" + err2);
+          }
+        } else {
+          throw new Error(err);
+        }
+      }
     },
-    goBackAfterTimeout() {
-      setTimeout(() => {
-        this.$router.go(-1);
-      }, 100);
-    },
+    getMemberInfo(){
+       const member = this.$store.state.memberInfo || {};
+      this.data.name = member.name || "";
+      this.data.phone = member.phone || "";
+      this.data.address = member.address || "";
+      this.data.email = member.email || "";
+      console.log(member)
+    }
   },
   watch: {
     "$store.state.isLoggedIn"(newVal) {
-      if (newVal == false) this.goBackAfterTimeout();
+      if (newVal == false) {
+        this.$store.dispatch("goToHomePage");
+      }
     },
   },
   created() {
-    this.getMember();
+    this.getMemberInfo();
   },
   mounted() {},
 };

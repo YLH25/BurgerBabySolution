@@ -14,8 +14,8 @@
               <div class="carousel-inner" style="height: 100%;">
                 <div class="carousel-item active" style="height: 100%;">
                   <img class="carousel-img d-block" v-if="data.imgs && data.imgs.length > 0"
-                    :src="`${this.$store.state.apiUrl}` + data.imgs[currentImageIndex].saveName"
-                    @click="showImg(`${this.$store.state.apiUrl}` + data.imgs[currentImageIndex].saveName)"
+                    :src="`${this.$store.state.apiUrl}/` + data.imgs[currentImageIndex].saveName"
+                    @click="showImg(`${this.$store.state.apiUrl}/` + data.imgs[currentImageIndex].saveName)"
                     style="object-fit:  cover;height: 100%;">
                 </div>
               </div>
@@ -89,26 +89,6 @@ export default {
             this.goBackAfterTimeout(); 
         });
       
-      // axios.get(url, {
-      //   headers: {
-      //     authorization: "Bearer " + this.$store.state.accessToken
-      //   }
-      // }
-      // ).then(res => {
-      //   this.data = res.data
-      //   this.tryCount = 0
-      // }).catch(() => {
-      //   if (this.tryCount == 0) {
-      //     this.tryCount++
-      //     this.$store.dispatch("getAccessToken").then(
-      //       () => { this.getData() }
-      //     ).catch(() => { alert("錯誤請登入"), this.goBackAfterTimeout() })
-      //   }
-      //   else {
-      //     alert("錯誤請登入")
-      //     this.goBackAfterTimeout()
-      //   }
-      // })
     },
     changeImage(i) {
       this.currentImageIndex += i

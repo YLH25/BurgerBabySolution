@@ -13,11 +13,12 @@ using BurgerBabyApi.Models.EFModel;
 using BurgerBabyApi.Models.Infa; 
 using Newtonsoft.Json;
 using Microsoft.Extensions.Options;
+using System.Threading.Tasks;
 
 
 namespace BurgerBabyApi.Controllers
 {
-
+ 
     public class HomeController : Controller
     {
         private IConfiguration _configuration;
@@ -46,7 +47,6 @@ namespace BurgerBabyApi.Controllers
                 {
                         new Claim(ClaimTypes.NameIdentifier,member.Id.ToString()),
                         new Claim(ClaimTypes.Email, member.Email),
-                        new Claim (ClaimTypes.Name, member.Name),
                         new Claim (ClaimTypes.Role, role.RoleName)
                 };
                 var claimsIdentity = new ClaimsIdentity(claims, "RefreshTokenScheme");
@@ -71,11 +71,7 @@ namespace BurgerBabyApi.Controllers
         {
             var claims = User.Claims.ToList();
             var accessToken = CreateJWT(claims);
-            var claimsData = new { email = claims[1].Value, name = claims[2].Value, role = claims[3].Value };
-            var jsonObjs = new List<string>();
-            jsonObjs.Add(JsonConvert.SerializeObject(claimsData));
-            jsonObjs.Add(JsonConvert.SerializeObject(accessToken));
-            return Ok(new { jsonObjs = jsonObjs });
+            return Ok(accessToken);
         }
 
         private string CreateJWT(List<Claim> claims)
@@ -97,9 +93,9 @@ namespace BurgerBabyApi.Controllers
 
         [AllowAnonymous]
         [HttpPost("logout")]
-        public IActionResult Logout()
+        public async Task<IActionResult> Logout()
         {
-            HttpContext.SignOutAsync("RefreshTokenScheme");
+            await HttpContext.SignOutAsync("RefreshTokenScheme");
 
             return Ok(new { statusCode = 200, message = "登出成功" });
         }

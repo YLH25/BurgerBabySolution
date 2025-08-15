@@ -1,5 +1,6 @@
-import { createStore } from 'vuex'
-import axios from 'axios'
+import { createStore } from "vuex";
+import axios from "axios";
+import router from "@/router";
 
 export default createStore({
   state() {
@@ -7,63 +8,63 @@ export default createStore({
       accessToken: "",
       isLoggedIn: false,
       memberInfo: {},
-      apiUrl:"https://localhost:7266"
-    }
+      apiUrl: "https://localhost:7266",
+    };
   },
-  getters: {
-
-
-  },
+  getters: {},
   mutations: {
-    changeAccessToken(state, jsonObj) {
-      if(jsonObj!=""){
-        let newJwt = JSON.parse(jsonObj)
-        state.accessToken = newJwt;
-      }
-      else{
- state.accessToken=""
-      }
-     
+    changeAccessToken(state, accessToken) {
+      state.accessToken = accessToken;
     },
     changeLoginStatus(state, status) {
       state.isLoggedIn = status;
     },
-    changeMemberInfo(state, jsonObj) {
-      if (Object.keys(jsonObj).length !== 0) {
-        let memberInfo = JSON.parse(jsonObj);
-        state.memberInfo = memberInfo
-      }
-      else{
-        state.memberInfo = {}
+    changeMemberInfo(state, member) {
+      if (Object.keys(member).length !== 0) {
+        state.memberInfo = member;
+      } else {
+        state.memberInfo = {};
       }
     },
-    changeMemberName(state,newName){
-      if(state.memberInfo.name){
-        state.memberInfo.name=newName;
-      }
-    }
-
+    addTryCount(state) {
+      state.tryCount++;
+    },
+    resetTryCount(state) {
+      state.tryCount = 0;
+    },
   },
   actions: {
     async getAccessToken(store) {
-      const url = `${this.state.apiUrl}/AccessToken`;
-      let resData = {};
+      const url = `${store.state.apiUrl}/accessToken`;
       try {
         const res = await axios.post(url, {}, { withCredentials: true });
-        resData = res.data;
-        store.commit("changeAccessToken", resData.jsonObjs[1]);
-        store.commit("changeMemberInfo", resData.jsonObjs[0]);
-        store.commit("changeLoginStatus", true); 
-      } catch (err) {
-        console.log(err.response ? err.response.status : "error");
-        store.commit("changeLoginStatus", false);
-        store.commit("changeMemberInfo", {});
+        const accessToken = res.data;
+        store.commit("changeAccessToken", accessToken);
+        return true;
+      } catch  {
+        return false;
       }
-    }
-
-
+    },
+    async getMember(store) {
+      const url = `${store.state.apiUrl}/member`;
+      try {
+        const res = await axios.get(url, {
+          headers: {
+            authorization: "Bearer " + store.state.accessToken,
+          },
+        });
+        store.commit("changeMemberInfo", res.data);
+        return true;
+      } catch {
+      return false;
+      }
+    },
+    async goToHomePage() {
+      alert("錯誤請登入");
+      setTimeout(() => {
+        router.push("/");
+      }, 100);
+    },
   },
-  modules: {
-
-  }
-})
+  modules: {},
+});
