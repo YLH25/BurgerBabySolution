@@ -56,7 +56,7 @@ namespace BurgerBabyApi
                 options => options.AddPolicy(
                     "MemberPolicy", builder =>
                     {
-                        builder.WithOrigins("http://localhost:7266", "http://localhost:8082").AllowCredentials().AllowAnyMethod().AllowAnyHeader();
+                        builder.WithOrigins( "http://localhost:8082", "https://localhost:8082").AllowCredentials().AllowAnyMethod().AllowAnyHeader();
                     }
                     )
                 );
