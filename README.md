@@ -154,6 +154,10 @@ https://www.iis.net/downloads/microsoft/url-rewrite
 
 3部署專案
 
+下載GitHub Release裡的IIS.zip
+
+https://github.com/YLH25/BurgerBabySolution/releases/tag/v1.0.0
+
 先將IIS.zip解壓縮後
 
 IIS資料夾內包含已打包完成的三個專案：
