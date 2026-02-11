@@ -164,7 +164,7 @@ IIS資料夾內包含已打包完成的三個專案：
 
 
 
-BurgerBaby → http://localhost:7228/
+BurgerBaby → https://localhost:7228/
 
 
 
@@ -172,7 +172,7 @@ BurgerBabyApi → https://localhost:7266/
 
 
 
-BurgerBabyFE → http://localhost:8082/
+BurgerBabyFE → https://localhost:8082/
 
 
 
